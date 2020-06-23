@@ -9,7 +9,7 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
   final Widget Function(BuildContext context, T element) itemBuilder;
   final Widget Function(BuildContext context, T element, int index)
       indexedItemBuilder;
-  final bool sort;
+  final StickyGroupedListOrder order;
   final Widget separator;
   final List<T> elements;
   final bool floatingHeader;
@@ -23,7 +23,6 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
   final bool addRepaintBoundaries;
   final bool addSemanticIndexes;
   final double minCacheExtent;
-  final bool reverse;
   final int semanticChildCount;
   final int initialScrollIndex;
   final double initialAlignment;
@@ -34,7 +33,7 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
     @required this.groupSeparatorBuilder,
     this.itemBuilder,
     this.indexedItemBuilder,
-    this.sort = true,
+    this.order,
     this.separator = const SizedBox.shrink(),
     this.floatingHeader = false,
     this.key,
@@ -47,7 +46,6 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     this.minCacheExtent,
-    this.reverse = false,
     this.semanticChildCount,
     this.initialAlignment = 0,
     this.initialScrollIndex = 0,
@@ -84,7 +82,6 @@ class _StickyGroupedListViewState<T, E>
           initialAlignment: widget.initialAlignment,
           initialScrollIndex: widget.initialScrollIndex,
           minCacheExtent: widget.minCacheExtent,
-          reverse: widget.reverse,
           semanticChildCount: widget.semanticChildCount,
           padding: widget.padding,
           itemCount: _sortedElements.length * 2,
@@ -151,7 +148,7 @@ class _StickyGroupedListViewState<T, E>
 
   List<T> _sortElements() {
     List<T> elements = widget.elements;
-    if (widget.sort && elements.isNotEmpty) {
+    if (elements.isNotEmpty) {
       elements.sort((e1, e2) {
         var compareResult;
         if (widget.groupBy(e1) is Comparable) {
@@ -163,6 +160,9 @@ class _StickyGroupedListViewState<T, E>
         }
         return compareResult;
       });
+    }
+    if (widget.order == StickyGroupedListOrder.DESC) {
+      elements = elements.reversed.toList();
     }
     return elements;
   }
@@ -211,3 +211,5 @@ class GroupedItemScrollController extends ItemScrollController {
         curve: curve);
   }
 }
+
+enum StickyGroupedListOrder { ASC, DESC }
