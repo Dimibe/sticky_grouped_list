@@ -1,6 +1,6 @@
 # Sticky grouped list package for Flutter.
  
-A ListView with sticky headers in which list items can be grouped to sections. Based on scrollable_positioned_list.
+A ListView with sticky headers in which list items can be grouped to sections. Based on [scrollable_positioned_list](https://pub.dev/packages/scrollable_positioned_list).
 
 <img src="https://raw.githubusercontent.com/Dimibe/grouped_list/master/assets/screenshot-for-readme.png" width="300">
 
@@ -37,14 +37,14 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 ```
 
 ### Parameters:
-| Name | Default value | Description |
-|----|----|----|
-|`elements`| - |A list of the data you want to display in the list (required)|
-|`groupBy` | - |Function which maps an element to its grouped value (required)|
-| `floatingHeader` | `false` | When set to `true` the sticky header will float over the list|
-|`itemBuilder` or `indexedItemBuilder`| - |Function which returns an Widget which defines the item. `indexedItemBuilder` provides the current index as well. If both are defined `indexedItemBuilder` is preferred|
-|`groupSeparator`| - | Function which returns an Widget which defines the section separator (required)| 
-|`separator` | no separator | A Widget which defines a separator between items inside a section|
-| `order`| `GroupedListOrder.ASC` | Change to `GroupedListOrder.DESC` to reverse the group sorting |
+| Name | Description | Required | Default value |
+|----|----|----|----|
+|`elements`| A list of the data you want to display in the list | required | - |
+|`groupBy` |Function which maps an element to its grouped value | required | - |
+| `floatingHeader` | When set to `true` the sticky header will float over the list | no | `false` |
+|`itemBuilder` / `indexedItemBuilder`| Function which returns an Widget which defines the item. `indexedItemBuilder` provides the current index as well. If both are defined `indexedItemBuilder` is preferred| yes, either of them | - |
+|`groupSeparator`| Function which returns an Widget which defines the section separator | required | - |
+|`separator` | A Widget which defines a separator between items inside a section | no | no separator |
+| `order` | Change to `GroupedListOrder.DESC` to reverse the group sorting | no | `GroupedListOrder.ASC` |
 
 You can also use most fields from the `ScrollablePositionedList.builder` constructor.
