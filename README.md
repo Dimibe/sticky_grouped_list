@@ -48,3 +48,8 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 | `order` | Change to `GroupedListOrder.DESC` to reverse the group sorting | no | `GroupedListOrder.ASC` |
 
 You can also use most fields from the `ScrollablePositionedList.builder` constructor.
+
+### Used packages: 
+| Package name | Copyright | License |
+|----|----|----|
+|[scrollable_positioned_list](https://pub.dev/packages/scrollable_positioned_list) | Copyright 2018 the Dart project authors, Inc. All rights reserved | [BSD 3-Clause "New" or "Revised" License](https://github.com/Dimibe/sticky_grouped_list/blob/master/LICENSE) |
