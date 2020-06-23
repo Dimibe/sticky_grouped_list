@@ -7,6 +7,7 @@ A ListView with sticky headers in which list items can be grouped to sections. B
 #### Features
 * Features from scrollable_positioned_list.
 * List items can be separated in groups.
+* For the groups an individual header can be set.
 * Sticky headers with floating option. 
 * All fields from `ScrollablePositionedList` available.
 
@@ -29,10 +30,10 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
  ```Dart
   StickyGroupedListView<dynamic, String>(
     elements: _elements,
-    groupBy: (element) => element['group'],
-    groupSeparatorBuilder: (element) => element['group'],
-    itemBuilder: (context, element) => Text(element['name']),
-    order: GroupedListOrder.ASC,
+    groupBy: (dynamic element) => element['group'],
+    groupSeparatorBuilder: (dynamic element) => Text(element['group']),
+    itemBuilder: (context, dynamic element) => Text(element['name']),
+    order: StickyGroupedListOrder.ASC,
   ),
 ```
 
@@ -43,9 +44,9 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 |`groupBy` |Function which maps an element to its grouped value | required | - |
 | `floatingHeader` | When set to `true` the sticky header will float over the list | no | `false` |
 |`itemBuilder` / `indexedItemBuilder`| Function which returns an Widget which defines the item. `indexedItemBuilder` provides the current index as well. If both are defined `indexedItemBuilder` is preferred| yes, either of them | - |
-|`groupSeparator`| Function which returns an Widget which defines the section separator | required | - |
-|`separator` | A Widget which defines a separator between items inside a section | no | no separator |
-| `order` | Change to `GroupedListOrder.DESC` to reverse the group sorting | no | `GroupedListOrder.ASC` |
+|`groupSeparatorBuilder`| Function which gets a element and returns an Widget which defines the group header separator | required | - |
+|`separator` | A Widget which defines a separator between items inside a group | no | no separator |
+| `order` | Change to `StickyGroupedListOrder.DESC` to reverse the group sorting | no | `StickyGroupedListOrder.ASC` |
 
 You can also use most fields from the `ScrollablePositionedList.builder` constructor.
 
