@@ -27,7 +27,7 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
  Create a `StickyGroupedListView` Widget:
  
  ```Dart
-  StickyGroupedListView(
+  StickyGroupedListView<dynamic, String>(
     elements: _elements,
     groupBy: (element) => element['group'],
     groupSeparatorBuilder: (element) => element['group'],
