@@ -19,7 +19,7 @@ A ListView with sticky headers in which list items can be grouped to sections. B
  Add the package to your pubspec.yaml:
 
  ```yaml
- sticky_ grouped_list: ^0.1.1
+ sticky_ grouped_list: ^0.1.2
  ```
  
  In your dart file, import the library:
