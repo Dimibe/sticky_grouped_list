@@ -1,4 +1,7 @@
+
 # Sticky grouped list package for Flutter.
+[![Pub](https://img.shields.io/pub/v/sticky_grouped_list.svg)](https://pub.dev/packages/sticky_grouped_list)
+![CI](https://github.com/Dimibe/sticky_grouped_list/workflows/CI/badge.svg?branch=master)
  
 A ListView with sticky headers in which list items can be grouped to sections. Based on [scrollable_positioned_list](https://pub.dev/packages/scrollable_positioned_list).
 

@@ -3,17 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
-
 final List _elements = [
   {'name': 'John', 'group': 'Team A'},
   //{'name': 'Will', 'group': 'Team B'},
- // {'name': 'Beth', 'group': 'Team A'},
+  // {'name': 'Beth', 'group': 'Team A'},
   {'name': 'Miranda', 'group': 'Team B'},
- // {'name': 'Mike', 'group': 'Team C'},
- {'name': 'Danny', 'group': 'Team C'},
+  // {'name': 'Mike', 'group': 'Team C'},
+  {'name': 'Danny', 'group': 'Team C'},
 ];
 void main() {
-Widget _buildGroupSeperator(dynamic element) {
+  Widget _buildGroupSeperator(dynamic element) {
     return Text(element['group']);
   }
 
@@ -24,7 +23,7 @@ Widget _buildGroupSeperator(dynamic element) {
           body: StickyGroupedListView(
             groupBy: (element) => element['group'],
             elements: _elements,
-            order:StickyGroupedListOrder.DESC,
+            order: StickyGroupedListOrder.DESC,
             groupSeparatorBuilder: _buildGroupSeperator,
             itemBuilder: (context, element) => Text(element['name']),
           ),
@@ -54,7 +53,8 @@ Widget _buildGroupSeperator(dynamic element) {
     );
   });
 
-  testWidgets('finds only one group separator per group', (WidgetTester tester) async {
+  testWidgets('finds only one group separator per group',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
