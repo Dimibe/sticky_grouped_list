@@ -9,3 +9,7 @@
 ## [0.1.2] - 26.06.2020
 
 * Refactor example
+
+## [0.2.0] - 30.06.2020
+
+* scrollTo/jumpTo will set the element under the group header
