@@ -58,13 +58,23 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
 class _StickyGroupedListViewState<T, E>
     extends State<StickyGroupedListView<T, E>> {
   ItemPositionsListener _listener;
-  ItemScrollController _controller;
+  GroupedItemScrollController _controller;
   GlobalKey _groupHeaderKey;
   List<T> _sortedElements = [];
   GlobalKey _key = GlobalKey();
   int _topElementIndex = 0;
-  RenderBox headerBox;
-  RenderBox listBox;
+  RenderBox _headerBox;
+  RenderBox _listBox;
+  double _headerDimension;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.itemScrollController ?? GroupedItemScrollController();
+    _controller._bind(this);
+    _listener = widget.itemPositionsListener ?? ItemPositionsListener.create();
+    _listener.itemPositions.addListener(_positionListener);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +86,9 @@ class _StickyGroupedListViewState<T, E>
         ScrollablePositionedList.builder(
           key: widget.key,
           scrollDirection: widget.scrollDirection,
-          itemScrollController: _getController(),
+          itemScrollController: _controller,
           physics: widget.physics,
-          itemPositionsListener: _getListener(),
+          itemPositionsListener: _listener,
           initialAlignment: widget.initialAlignment,
           initialScrollIndex: widget.initialScrollIndex,
           minCacheExtent: widget.minCacheExtent,
@@ -122,15 +132,16 @@ class _StickyGroupedListViewState<T, E>
   }
 
   _positionListener() {
-    headerBox ??= _groupHeaderKey?.currentContext?.findRenderObject();
-    double headerHeight = headerBox?.size?.height ?? 0;
-    listBox ??= _key?.currentContext?.findRenderObject();
-    double height = listBox?.size?.height ?? 0;
+    _headerBox ??= _groupHeaderKey?.currentContext?.findRenderObject();
+    double headerHeight = _headerBox?.size?.height ?? 0;
+    _listBox ??= _key?.currentContext?.findRenderObject();
+    double height = _listBox?.size?.height ?? 0;
+    _headerDimension = headerHeight / height;
 
     ItemPosition currentItem = _listener.itemPositions.value
         .where((ItemPosition position) =>
             position.index.isOdd &&
-            position.itemTrailingEdge > headerHeight / height)
+            position.itemTrailingEdge > _headerDimension)
         .reduce((ItemPosition min, ItemPosition position) =>
             position.itemTrailingEdge < min.itemTrailingEdge ? position : min);
 
@@ -179,22 +190,19 @@ class _StickyGroupedListViewState<T, E>
     }
     return Container();
   }
-
-  GroupedItemScrollController _getController() {
-    _controller = widget.itemScrollController ?? GroupedItemScrollController();
-    return _controller;
-  }
-
-  ItemPositionsListener _getListener() {
-    _listener = widget.itemPositionsListener ?? ItemPositionsListener.create();
-    _listener.itemPositions.addListener(_positionListener);
-    return _listener;
-  }
 }
 
 class GroupedItemScrollController extends ItemScrollController {
+  _StickyGroupedListViewState _stickyGroupedListViewState;
+
   @override
-  void jumpTo({@required int index, double alignment = 0}) {
+  void jumpTo(
+      {@required int index,
+      double alignment = 0,
+      bool automaticAlignment = true}) {
+    if (automaticAlignment) {
+      alignment = _stickyGroupedListViewState?._headerDimension ?? alignment;
+    }
     return super.jumpTo(index: index * 2 + 1, alignment: alignment);
   }
 
@@ -202,13 +210,22 @@ class GroupedItemScrollController extends ItemScrollController {
   Future<void> scrollTo(
       {@required int index,
       double alignment = 0,
+      bool automaticAlignment = true,
       @required Duration duration,
       Curve curve = Curves.linear}) {
+    if (automaticAlignment) {
+      alignment = _stickyGroupedListViewState?._headerDimension ?? alignment;
+    }
     return super.scrollTo(
         index: index * 2 + 1,
         alignment: alignment,
         duration: duration,
         curve: curve);
+  }
+
+  void _bind(_StickyGroupedListViewState stickyGroupedListViewState) {
+    assert(_stickyGroupedListViewState == null);
+    _stickyGroupedListViewState = stickyGroupedListViewState;
   }
 }
 
