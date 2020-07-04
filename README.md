@@ -19,7 +19,7 @@ A ListView with sticky headers in which list items can be grouped to sections. B
  Add the package to your pubspec.yaml:
 
  ```yaml
- sticky_ grouped_list: ^0.2.0
+ sticky_grouped_list: ^0.2.0
  ```
  
  In your dart file, import the library:
@@ -36,6 +36,7 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
     groupBy: (dynamic element) => element['group'],
     groupSeparatorBuilder: (dynamic element) => Text(element['group']),
     itemBuilder: (context, dynamic element) => Text(element['name']),
+    itemScrollController: GroupedItemScrollController(),
     order: StickyGroupedListOrder.ASC,
   ),
 ```
@@ -44,14 +45,17 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 | Name | Description | Required | Default value |
 |----|----|----|----|
 |`elements`| A list of the data you want to display in the list | required | - |
-|`groupBy` |Function which maps an element to its grouped value | required | - |
-| `floatingHeader` | When set to `true` the sticky header will float over the list | no | `false` |
 |`itemBuilder` / `indexedItemBuilder`| Function which returns an Widget which defines the item. `indexedItemBuilder` provides the current index as well. If both are defined `indexedItemBuilder` is preferred| yes, either of them | - |
+|`groupBy` |Function which maps an element to its grouped value | required | - |
 |`groupSeparatorBuilder`| Function which gets a element and returns an Widget which defines the group header separator | required | - |
 |`separator` | A Widget which defines a separator between items inside a group | no | no separator |
+| `floatingHeader` | When set to `true` the sticky header will float over the list | no | `false` |
 | `order` | Change to `StickyGroupedListOrder.DESC` to reverse the group sorting | no | `StickyGroupedListOrder.ASC` |
+|`itemScrollController`| Instead of an `ItemScrollController` a `GroupedItemScrollController` needs to be provided. | no | - |
 
-You can also use most fields from the `ScrollablePositionedList.builder` constructor.
+*`GroupedItemScrollController.srollTo()` and `GroupedItemScrollController.jumpTo()` automatic set the `alignment` so that the item is fully visible aligned under the group header. Both methods take `automaticAlignment` as a additional optional paramenter which needs to be set to true if `alignment` is specified.*
+
+**Also the fields from `ScrollablePositionedList.builder` can be used.**
 
 ### Used packages: 
 | Package name | Copyright | License |

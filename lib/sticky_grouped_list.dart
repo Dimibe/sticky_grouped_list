@@ -3,30 +3,99 @@ library sticky_grouped_list;
 import 'package:flutter/widgets.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+/// A groupable list of widgets similar to [ScrollablePositionedList], execpt that the
+/// items can be sectioned into groups.
+///
+/// See [ScrollablePositionedList]
 class StickyGroupedListView<T, E> extends StatefulWidget {
+  final Key key;
+
+  /// Items of which [itemBuilder] or [indexedItemBuilder] produce the list.
+  final List<T> elements;
+
+  /// Defines which elements are grouped together.
+  ///
+  /// Function is called for each element, when equal for two elements, those two belong the same group.
   final E Function(T element) groupBy;
+
+  /// Called to build group separators for each group.
+  /// element is always the first element of the group.
   final Widget Function(T element) groupSeparatorBuilder;
+
+  /// Called to build children for the list with
+  /// 0 <= element < elements.length.
   final Widget Function(BuildContext context, T element) itemBuilder;
+
+  /// Called to build children for the list with
+  /// 0 <= element, index < elements.length
   final Widget Function(BuildContext context, T element, int index)
       indexedItemBuilder;
+
+  /// Whether the view scrolls in the reading direction.
+  ///
+  /// Defaults to ASC.
+  ///
+  /// See [ScrollView.reverse].
   final StickyGroupedListOrder order;
+
+  /// Called to build separators for between each item in the list.
   final Widget separator;
-  final List<T> elements;
+
+  /// Whether the group headers float over the list or occupy their own space.
   final bool floatingHeader;
-  final Key key;
+
+  /// Controller for jumping or scrolling to an item.
   final GroupedItemScrollController itemScrollController;
+
+  /// Notifier that reports the items laid out in the list after each frame.
   final ItemPositionsListener itemPositionsListener;
   final Axis scrollDirection;
+
+  /// How the scroll view should respond to user input.
+  ///
+  /// See [ScrollView.physics].
   final ScrollPhysics physics;
+
+  /// The amount of space by which to inset the children.
   final EdgeInsetsGeometry padding;
+
+  /// Whether to wrap each child in an [AutomaticKeepAlive].
+  ///
+  /// See [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
+
+  /// Whether to wrap each child in a [RepaintBoundary].
+  ///
+  /// See [SliverChildBuilderDelegate.addRepaintBoundaries].
   final bool addRepaintBoundaries;
+
+  /// Whether to wrap each child in an [IndexedSemantics].
+  ///
+  /// See [SliverChildBuilderDelegate.addSemanticIndexes].
   final bool addSemanticIndexes;
+
+  /// The minimum cache extent used by the underlying scroll lists.
+  /// See [ScrollView.cacheExtent].
+  ///
+  /// Note that the [ScrollablePositionedList] uses two lists to simulate long
+  /// scrolls, so using the [ScrollController.scrollTo] method may result
+  /// in builds of widgets that would otherwise already be built in the
+  /// cache extent.
   final double minCacheExtent;
+
+  /// The number of children that will contribute semantic information.
+  ///
+  /// See [ScrollView.semanticChildCount] for more information.
   final int semanticChildCount;
+
+  /// Index of an item to initially align within the viewport.
   final int initialScrollIndex;
+
+  /// Determines where the leading edge of the item at [initialScrollIndex]
+  /// should be placed.
   final double initialAlignment;
 
+  /// Create a [StickyGroupedListView].
   StickyGroupedListView({
     @required this.elements,
     @required this.groupBy,
@@ -74,6 +143,12 @@ class _StickyGroupedListViewState<T, E>
     _controller._bind(this);
     _listener = widget.itemPositionsListener ?? ItemPositionsListener.create();
     _listener.itemPositions.addListener(_positionListener);
+  }
+
+  @override
+  void dispose() {
+    _listener.itemPositions.removeListener(_positionListener);
+    super.dispose();
   }
 
   @override
@@ -192,9 +267,16 @@ class _StickyGroupedListViewState<T, E>
   }
 }
 
+/// Controller to jump or scroll to a particular element the list.
+///
+/// See [ItemScrollController].
 class GroupedItemScrollController extends ItemScrollController {
   _StickyGroupedListViewState _stickyGroupedListViewState;
 
+  /// Jumps to the element at [index]. The element will be placed under the group header.
+  /// To set a custom [alignment] set [automaticAlignment] to false.
+  ///
+  /// See [ItemScrollController.jumpTo]
   @override
   void jumpTo(
       {@required int index,
@@ -206,6 +288,10 @@ class GroupedItemScrollController extends ItemScrollController {
     return super.jumpTo(index: index * 2 + 1, alignment: alignment);
   }
 
+  /// Scrolls to the element at [index]. The element will be placed under the group header.
+  /// To set a custom [alignment] set [automaticAlignment] to false.
+  ///
+  /// See [ItemScrollController.scrollTo]
   @override
   Future<void> scrollTo(
       {@required int index,
@@ -229,4 +315,5 @@ class GroupedItemScrollController extends ItemScrollController {
   }
 }
 
+/// Used to define the order of a [StickyGroupedListView].
 enum StickyGroupedListOrder { ASC, DESC }
