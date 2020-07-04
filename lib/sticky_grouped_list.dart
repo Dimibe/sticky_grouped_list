@@ -49,6 +49,10 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
 
   /// Notifier that reports the items laid out in the list after each frame.
   final ItemPositionsListener itemPositionsListener;
+
+  /// The axis along which the scroll view scrolls.
+  ///
+  /// Defaults to [Axis.vertical].
   final Axis scrollDirection;
 
   /// How the scroll view should respond to user input.
@@ -95,7 +99,7 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
   /// should be placed.
   final double initialAlignment;
 
-  /// Create a [StickyGroupedListView].
+  /// Creates a [StickyGroupedListView].
   StickyGroupedListView({
     @required this.elements,
     @required this.groupBy,
