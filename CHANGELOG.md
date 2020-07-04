@@ -13,3 +13,8 @@
 ## [0.2.0] - 30.06.2020
 
 * scrollTo/jumpTo will set the element under the group header
+
+## [0.2.1] - 04.07.2020
+
+* Add code documentation
+* improved README
