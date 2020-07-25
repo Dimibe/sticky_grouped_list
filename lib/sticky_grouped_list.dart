@@ -1,10 +1,12 @@
 library sticky_grouped_list;
 
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-/// A groupable list of widgets similar to [ScrollablePositionedList], execpt that the
-/// items can be sectioned into groups.
+/// A groupable list of widgets similar to [ScrollablePositionedList], execpt
+/// that the items can be sectioned into groups.
 ///
 /// See [ScrollablePositionedList]
 class StickyGroupedListView<T, E> extends StatefulWidget {
@@ -15,7 +17,8 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
 
   /// Defines which elements are grouped together.
   ///
-  /// Function is called for each element, when equal for two elements, those two belong the same group.
+  /// Function is called for each element, when equal for two elements, those
+  /// two belong the same group.
   final E Function(T element) groupBy;
 
   /// Called to build group separators for each group.
@@ -130,6 +133,7 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
 
 class _StickyGroupedListViewState<T, E>
     extends State<StickyGroupedListView<T, E>> {
+  StreamController<int> _streamController = StreamController<int>();
   ItemPositionsListener _listener;
   GroupedItemScrollController _controller;
   GlobalKey _groupHeaderKey;
@@ -152,6 +156,7 @@ class _StickyGroupedListViewState<T, E>
   @override
   void dispose() {
     _listener.itemPositions.removeListener(_positionListener);
+    _streamController.close();
     super.dispose();
   }
 
@@ -198,7 +203,11 @@ class _StickyGroupedListViewState<T, E>
             return _buildItem(context, actualIndex);
           },
         ),
-        _showFixedGroupHeader(),
+        StreamBuilder<int>(
+          stream: _streamController.stream,
+          initialData: _topElementIndex,
+          builder: (_, snapshot) => _showFixedGroupHeader(snapshot.data),
+        )
       ],
     );
   }
@@ -229,9 +238,8 @@ class _StickyGroupedListViewState<T, E>
       E curr = widget.groupBy(_sortedElements[index]);
       E prev = widget.groupBy(_sortedElements[_topElementIndex]);
       if (prev != curr) {
-        setState(() {
-          _topElementIndex = index;
-        });
+        _topElementIndex = index;
+        _streamController.add(_topElementIndex);
       }
     }
   }
@@ -257,14 +265,14 @@ class _StickyGroupedListViewState<T, E>
     return elements;
   }
 
-  Widget _showFixedGroupHeader() {
+  Widget _showFixedGroupHeader(int index) {
     if (widget.elements.length > 0) {
       _groupHeaderKey = GlobalKey();
       return Container(
         key: _groupHeaderKey,
         color: widget.floatingHeader ? null : Color(0xffF7F7F7),
         width: widget.floatingHeader ? null : MediaQuery.of(context).size.width,
-        child: widget.groupSeparatorBuilder(_sortedElements[_topElementIndex]),
+        child: widget.groupSeparatorBuilder(_sortedElements[index]),
       );
     }
     return Container();
@@ -277,7 +285,8 @@ class _StickyGroupedListViewState<T, E>
 class GroupedItemScrollController extends ItemScrollController {
   _StickyGroupedListViewState _stickyGroupedListViewState;
 
-  /// Jumps to the element at [index]. The element will be placed under the group header.
+  /// Jumps to the element at [index]. The element will be placed under the
+  /// group header.
   /// To set a custom [alignment] set [automaticAlignment] to false.
   ///
   /// See [ItemScrollController.jumpTo]
@@ -292,7 +301,8 @@ class GroupedItemScrollController extends ItemScrollController {
     return super.jumpTo(index: index * 2 + 1, alignment: alignment);
   }
 
-  /// Scrolls to the element at [index]. The element will be placed under the group header.
+  /// Scrolls to the element at [index]. The element will be placed under the
+  /// group header.
   /// To set a custom [alignment] set [automaticAlignment] to false.
   ///
   /// See [ItemScrollController.scrollTo]
