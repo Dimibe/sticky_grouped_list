@@ -22,3 +22,7 @@
 ## [0.3.0] - 25.07.2020
 
 * Fix performance issue: Don't rebuild widget when sticky header changes.
+
+## [1.0.0] - 05.09.2020
+
+* New feature: Reverse list - easy chat dialog creation
