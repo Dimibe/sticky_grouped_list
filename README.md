@@ -5,7 +5,7 @@
  
 A ListView with sticky headers in which list items can be grouped to sections. Based on [scrollable_positioned_list](https://pub.dev/packages/scrollable_positioned_list).
 
-![](https://raw.githubusercontent.com/Dimibe/sticky_grouped_list/master/assets/new-screenshot-for-readme.png) ![](https://raw.githubusercontent.com/Dimibe/sticky_grouped_list/master/assets/chat.png)
+![](https://raw.githubusercontent.com/Dimibe/sticky_grouped_list/master/assets/new-screenshot-for-readme.png =200x) ![](https://raw.githubusercontent.com/Dimibe/sticky_grouped_list/master/assets/chat.png =200x)
 
 
 #### Highlight - Chat Dialog
