@@ -66,6 +66,13 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
   /// The amount of space by which to inset the children.
   final EdgeInsetsGeometry padding;
 
+  /// Whether the view scrolls in the reading direction.
+  ///
+  /// Defaults to false.
+  ///
+  /// See [ScrollView.reverse].
+  final bool reverse;
+
   /// Whether to wrap each child in an [AutomaticKeepAlive].
   ///
   /// See [SliverChildBuilderDelegate.addAutomaticKeepAlives].
@@ -118,6 +125,7 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
     this.itemPositionsListener,
     this.physics,
     this.padding,
+    this.reverse = false,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
@@ -143,6 +151,7 @@ class _StickyGroupedListViewState<T, E>
   RenderBox _headerBox;
   RenderBox _listBox;
   double _headerDimension;
+  bool Function(int) _isSeparator;
 
   @override
   void initState() {
@@ -163,6 +172,9 @@ class _StickyGroupedListViewState<T, E>
   @override
   Widget build(BuildContext context) {
     this._sortedElements = _sortElements();
+    var hiddenIndex = widget.reverse ? _sortedElements.length * 2 - 1 : 0;
+    _isSeparator = widget.reverse ? (int i) => i.isOdd : (int i) => i.isEven;
+
     return Stack(
       key: _key,
       alignment: Alignment.topCenter,
@@ -178,22 +190,26 @@ class _StickyGroupedListViewState<T, E>
           minCacheExtent: widget.minCacheExtent,
           semanticChildCount: widget.semanticChildCount,
           padding: widget.padding,
+          reverse: widget.reverse,
           itemCount: _sortedElements.length * 2,
           addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
           addRepaintBoundaries: widget.addRepaintBoundaries,
           addSemanticIndexes: widget.addSemanticIndexes,
           itemBuilder: (context, index) {
             int actualIndex = index ~/ 2;
-            if (index == 0) {
+
+            if (index == hiddenIndex) {
               return Opacity(
                 opacity: 0,
                 child:
                     widget.groupSeparatorBuilder(_sortedElements[actualIndex]),
               );
             }
-            if (index.isEven) {
+
+            if (_isSeparator(index)) {
               E curr = widget.groupBy(_sortedElements[actualIndex]);
-              E prev = widget.groupBy(_sortedElements[actualIndex - 1]);
+              E prev = widget.groupBy(
+                  _sortedElements[actualIndex + (widget.reverse ? 1 : -1)]);
               if (prev != curr) {
                 return widget
                     .groupSeparatorBuilder(_sortedElements[actualIndex]);
@@ -226,12 +242,18 @@ class _StickyGroupedListViewState<T, E>
     double height = _listBox?.size?.height ?? 0;
     _headerDimension = headerHeight / height;
 
+    ItemPosition reducePositions(ItemPosition pos, ItemPosition current) {
+      if (widget.reverse) {
+        return current.itemTrailingEdge > pos.itemTrailingEdge ? current : pos;
+      }
+      return current.itemTrailingEdge < pos.itemTrailingEdge ? current : pos;
+    }
+
     ItemPosition currentItem = _listener.itemPositions.value
         .where((ItemPosition position) =>
-            position.index.isOdd &&
+            !_isSeparator(position.index) &&
             position.itemTrailingEdge > _headerDimension)
-        .reduce((ItemPosition min, ItemPosition position) =>
-            position.itemTrailingEdge < min.itemTrailingEdge ? position : min);
+        .reduce(reducePositions);
 
     int index = (currentItem?.index ?? 0) ~/ 2;
     if (_topElementIndex != index) {
