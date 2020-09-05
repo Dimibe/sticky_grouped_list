@@ -12,8 +12,9 @@ A ListView with sticky headers in which list items can be grouped to sections. B
 
 Easy creation of chat-like dialogs.
 Just set the option `reverse` to `true` and the option `order` to `StickyGroupedListOrder.DESC`. A full example can be found in the examples.
+The list will be scrolled to the end in the initial state and therefore scrolling will be against redeaing direction. 
 
-![](https://raw.githubusercontent.com/Dimibe/sticky_grouped_list/master/assets/chat.gif)
+![](https://raw.githubusercontent.com/Dimibe/sticky_grouped_list/master/assets/chat.png)
 
 
 #### Features
