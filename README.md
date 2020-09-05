@@ -7,8 +7,17 @@ A ListView with sticky headers in which list items can be grouped to sections. B
 
 <img src="https://raw.githubusercontent.com/Dimibe/sticky_grouped_list/master/assets/new-screenshot-for-readme.png" width="300">
 
+
+#### Highlight - Chat Dialog
+
+Easy creation of chat-like dialogs.
+Just set the option `reverse` to `true` and the option `order` to `StickyGroupedListOrder.DESC`. A full example can be found in the examples.
+
+![](https://raw.githubusercontent.com/Dimibe/sticky_grouped_list/master/assets/chat.gif)
+
+
 #### Features
-* Features from scrollable_positioned_list.
+* Easy creation of chat-like interfaces. 
 * List items can be separated in groups.
 * For the groups an individual header can be set.
 * Sticky headers with floating option. 
@@ -52,6 +61,7 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 | `floatingHeader` | When set to `true` the sticky header will float over the list | no | `false` |
 | `order` | Change to `StickyGroupedListOrder.DESC` to reverse the group sorting | no | `StickyGroupedListOrder.ASC` |
 |`itemScrollController`| Instead of an `ItemScrollController` a `GroupedItemScrollController` needs to be provided. | no | - |
+|`reverse`| Scrolls in opposite from reading direction (Starting at bottom and scrolling up). Same as in scrollable_positioned_list. | no | false |
 
 *`GroupedItemScrollController.srollTo()` and `GroupedItemScrollController.jumpTo()` automatic set the `alignment` so that the item is fully visible aligned under the group header. Both methods take `automaticAlignment` as a additional optional paramenter which needs to be set to true if `alignment` is specified.*
 
