@@ -1,28 +1,33 @@
-## [0.1.0] - 23.06.2020
+## [1.1.0] - 06.09.2020
 
-* Initial release
+* New feature: The background color of the sticky header is now customizable (only if floatingHeaders option is not used).
 
-## [0.1.1] - 24.06.2020
 
-* Add example
+## [1.0.0] - 05.09.2020
 
-## [0.1.2] - 26.06.2020
+* New feature: Reverse list - easy chat dialog creation
 
-* Refactor example
+## [0.3.0] - 25.07.2020
 
-## [0.2.0] - 30.06.2020
-
-* scrollTo/jumpTo will set the element under the group header
+* Fix performance issue: Don't rebuild widget when sticky header changes.
 
 ## [0.2.1] - 04.07.2020
 
 * Add code documentation
 * improved README
 
-## [0.3.0] - 25.07.2020
+## [0.2.0] - 30.06.2020
 
-* Fix performance issue: Don't rebuild widget when sticky header changes.
+* scrollTo/jumpTo will set the element under the group header
 
-## [1.0.0] - 05.09.2020
+## [0.1.2] - 26.06.2020
 
-* New feature: Reverse list - easy chat dialog creation
+* Refactor example
+
+## [0.1.1] - 24.06.2020
+
+* Add example
+
+## [0.1.0] - 23.06.2020
+
+* Initial release

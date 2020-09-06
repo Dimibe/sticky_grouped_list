@@ -28,7 +28,7 @@ The list will be scrolled to the end in the initial state and therefore scrollin
  Add the package to your pubspec.yaml:
 
  ```yaml
- sticky_grouped_list: ^1.0.0
+ sticky_grouped_list: ^1.1.0
  ```
  
  In your dart file, import the library:
@@ -59,6 +59,7 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 |`groupSeparatorBuilder`| Function which gets a element and returns an Widget which defines the group header separator | required | - |
 |`separator` | A Widget which defines a separator between items inside a group | no | no separator |
 | `floatingHeader` | When set to `true` the sticky header will float over the list | no | `false` |
+| `stickyHeaderBackgroundColor` | Defines the background color of the sticky header | no | `Color(0xffF7F7F7)` |
 | `order` | Change to `StickyGroupedListOrder.DESC` to reverse the group sorting | no | `StickyGroupedListOrder.ASC` |
 |`itemScrollController`| Instead of an `ItemScrollController` a `GroupedItemScrollController` needs to be provided. | no | - |
 |`reverse`| Scrolls in opposite from reading direction (Starting at bottom and scrolling up). Same as in scrollable_positioned_list. | no | false |
