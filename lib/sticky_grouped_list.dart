@@ -34,11 +34,9 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
   final Widget Function(BuildContext context, T element, int index)
       indexedItemBuilder;
 
-  /// Whether the view scrolls in the reading direction.
+  /// Whether the sorting of the list is ascending or descending.
   ///
   /// Defaults to ASC.
-  ///
-  /// See [ScrollView.reverse].
   final StickyGroupedListOrder order;
 
   /// Called to build separators for between each item in the list.
