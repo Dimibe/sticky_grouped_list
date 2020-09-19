@@ -45,6 +45,7 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
     groupBy: (dynamic element) => element['group'],
     groupSeparatorBuilder: (dynamic element) => Text(element['group']),
     itemBuilder: (context, dynamic element) => Text(element['name']),
+    itemComparator: (element1, element2) => element1['name'].compareTo(element2['name']),
     itemScrollController: GroupedItemScrollController(),
     order: StickyGroupedListOrder.ASC,
   ),
@@ -60,8 +61,10 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 |`separator` | A Widget which defines a separator between items inside a group | no | no separator |
 | `floatingHeader` | When set to `true` the sticky header will float over the list | no | `false` |
 | `stickyHeaderBackgroundColor` | Defines the background color of the sticky header | no | `Color(0xffF7F7F7)` |
-| `order` | Change to `StickyGroupedListOrder.DESC` to reverse the group sorting | no | `StickyGroupedListOrder.ASC` |
 |`itemScrollController`| Instead of an `ItemScrollController` a `GroupedItemScrollController` needs to be provided. | no | - |
+| `order` | Change to `StickyGroupedListOrder.DESC` to reverse the group sorting | no | `StickyGroupedListOrder.ASC` |
+| `groupComparator` | Can be used to define a custom sorting for the groups. Otherwise the natural sorting order is used | no | - |
+| `itemComparator` | Can be used to define a custom sorting for the elements inside each group. Otherwise the natural sorting order is used | no | - |
 |`reverse`| Scrolls in opposite from reading direction (Starting at bottom and scrolling up). Same as in scrollable_positioned_list. | no | false |
 
 *`GroupedItemScrollController.srollTo()` and `GroupedItemScrollController.jumpTo()` automatic set the `alignment` so that the item is fully visible aligned under the group header. Both methods take `automaticAlignment` as a additional optional paramenter which needs to be set to true if `alignment` is specified.*
