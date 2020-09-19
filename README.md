@@ -45,9 +45,9 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
     groupBy: (dynamic element) => element['group'],
     groupSeparatorBuilder: (dynamic element) => Text(element['group']),
     itemBuilder: (context, dynamic element) => Text(element['name']),
-    itemComparator: (element1, element2) => element1['name'].compareTo(element2['name']),
-    itemScrollController: GroupedItemScrollController(),
-    order: StickyGroupedListOrder.ASC,
+    itemComparator: (element1, element2) => element1['name'].compareTo(element2['name']), // optional
+    itemScrollController: GroupedItemScrollController(), // optional
+    order: StickyGroupedListOrder.ASC, // optional
   ),
 ```
 
