@@ -17,9 +17,21 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
 
   /// Defines which elements are grouped together.
   ///
-  /// Function is called for each element, when equal for two elements, those
-  /// two belong the same group.
+  /// Function is called for each element in the list, when equal for two
+  /// elements, those two belong to the same group.
   final E Function(T element) groupBy;
+
+  /// Can be used to define a custom sorting for the groups.
+  ///
+  /// If not set groups will be sorted with their natural sorting order or their
+  /// specific [Comparable] implementation.
+  final int Function(E value1, E value2) groupComparator;
+
+  /// Can be used to define a custom sorting for the elements inside each group.
+  ///
+  /// If not set elements will be sorted with their natural sorting order or
+  /// their specific [Comparable] implementation.
+  final int Function(T element1, T element2) itemComparator;
 
   /// Called to build group separators for each group.
   /// element is always the first element of the group.
@@ -116,8 +128,10 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
     @required this.elements,
     @required this.groupBy,
     @required this.groupSeparatorBuilder,
+    this.groupComparator,
     this.itemBuilder,
     this.indexedItemBuilder,
+    this.itemComparator,
     this.order,
     this.separator = const SizedBox.shrink(),
     this.floatingHeader = false,
@@ -274,12 +288,21 @@ class _StickyGroupedListViewState<T, E>
     if (elements.isNotEmpty) {
       elements.sort((e1, e2) {
         var compareResult;
-        if (widget.groupBy(e1) is Comparable) {
+        // compare groups
+        if (widget.groupComparator != null) {
+          compareResult =
+              widget.groupComparator(widget.groupBy(e1), widget.groupBy(e2));
+        } else if (widget.groupBy(e1) is Comparable) {
           compareResult = (widget.groupBy(e1) as Comparable)
               .compareTo(widget.groupBy(e2) as Comparable);
         }
-        if ((compareResult == null || compareResult == 0) && e1 is Comparable) {
-          compareResult = (e1).compareTo(e2);
+        // compare elements inside group
+        if ((compareResult == null || compareResult == 0)) {
+          if (widget.itemComparator != null) {
+            compareResult = widget.itemComparator(e1, e2);
+          } else if (e1 is Comparable) {
+            compareResult = e1.compareTo(e2);
+          }
         }
         return compareResult;
       });

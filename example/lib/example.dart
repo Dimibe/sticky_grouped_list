@@ -20,7 +20,6 @@ List _elements = <Element>[
   Element(DateTime(2020, 6, 30, 12), 'Car wash', Icons.local_car_wash),
 ];
 
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -39,6 +38,10 @@ class MyApp extends StatelessWidget {
           order: StickyGroupedListOrder.ASC,
           groupBy: (Element element) =>
               DateTime(element.date.year, element.date.month, element.date.day),
+          groupComparator: (DateTime value1, DateTime value2) =>
+              value2.compareTo(value1),
+          itemComparator: (Element element1, Element element2) =>
+              element1.date.compareTo(element2.date),
           floatingHeader: true,
           groupSeparatorBuilder: (Element element) => Container(
             height: 50,
@@ -87,15 +90,10 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Element implements Comparable {
+class Element {
   DateTime date;
   String name;
   IconData icon;
 
   Element(this.date, this.name, this.icon);
-
-  @override
-  int compareTo(other) {
-    return date.compareTo(other.date);
-  }
 }
