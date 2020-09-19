@@ -1,3 +1,7 @@
+## [1.2.0] - 19.09.2020
+
+* New feature custom sorting. Added two new options `groupComparator` and `itemComparator`which can be used for comparison between two groups and items. If used the functions will be used for sorting the list.
+
 ## [1.1.0] - 06.09.2020
 
 * New feature: The background color of the sticky header is now customizable (only if floatingHeaders option is not used).
