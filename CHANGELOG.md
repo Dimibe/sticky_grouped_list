@@ -1,3 +1,7 @@
+## [2.0.0-nullsafety.0] - 28.03.2021
+
+* Sound null-safety
+
 ## [1.3.0] - 15.11.2020
 
 * Update dependencies
