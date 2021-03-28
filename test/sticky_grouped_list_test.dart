@@ -21,11 +21,11 @@ void main() {
       MaterialApp(
         home: Scaffold(
           body: StickyGroupedListView(
-            groupBy: (element) => element['group'],
+            groupBy: (dynamic element) => element['group'],
             elements: _elements,
             order: StickyGroupedListOrder.DESC,
             groupSeparatorBuilder: _buildGroupSeperator,
-            itemBuilder: (context, element) => Text(element['name']),
+            itemBuilder: (context, dynamic element) => Text(element['name']),
           ),
         ),
       ),
@@ -43,10 +43,10 @@ void main() {
       MaterialApp(
         home: Scaffold(
           body: StickyGroupedListView(
-            groupBy: (element) => element['group'],
+            groupBy: (dynamic element) => element['group'],
             elements: [],
             groupSeparatorBuilder: _buildGroupSeperator,
-            itemBuilder: (context, element) => Text(element['name']),
+            itemBuilder: (context, dynamic element) => Text(element['name']),
           ),
         ),
       ),
@@ -59,10 +59,10 @@ void main() {
       MaterialApp(
         home: Scaffold(
           body: StickyGroupedListView(
-            groupBy: (element) => element['group'],
+            groupBy: (dynamic element) => element['group'],
             elements: _elements,
             groupSeparatorBuilder: _buildGroupSeperator,
-            itemBuilder: (context, element) => Text(element['name']),
+            itemBuilder: (context, dynamic element) => Text(element['name']),
           ),
         ),
       ),
