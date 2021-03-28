@@ -274,7 +274,7 @@ class _StickyGroupedListViewState<T, E>
             position.itemTrailingEdge > _headerDimension!)
         .reduce(reducePositions);
 
-    int index = (currentItem?.index ?? 0) ~/ 2;
+    int index = currentItem.index ~/ 2;
     if (_topElementIndex != index) {
       E curr = widget.groupBy(_sortedElements[index]);
       E prev = widget.groupBy(_sortedElements[_topElementIndex]);
