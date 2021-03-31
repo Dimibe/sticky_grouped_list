@@ -3,7 +3,7 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
 void main() => runApp(MyApp());
 
-List _elements = <Element>[
+List<Element> _elements = <Element>[
   Element(DateTime(2020, 6, 24, 18), 'Got to gym', Icons.fitness_center),
   Element(DateTime(2020, 6, 24, 9), 'Work', Icons.work),
   Element(DateTime(2020, 6, 25, 8), 'Buy groceries', Icons.shopping_basket),
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.blue[300],
                   border: Border.all(
-                    color: Colors.blue[300],
+                    color: Colors.blue[300]!,
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(20.0)),
                 ),
