@@ -379,7 +379,7 @@ class GroupedItemScrollController extends ItemScrollController {
   }
 
   void _bind(_StickyGroupedListViewState stickyGroupedListViewState) {
-    assert(_stickyGroupedListViewState == null);
+    //assert(_stickyGroupedListViewState == null);
     _stickyGroupedListViewState = stickyGroupedListViewState;
   }
 }
