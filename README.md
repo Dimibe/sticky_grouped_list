@@ -28,7 +28,7 @@ The list will be scrolled to the end in the initial state and therefore scrollin
  Add the package to your pubspec.yaml:
 
  ```yaml
- sticky_grouped_list: ^1.3.0
+ sticky_grouped_list: ^2.0.0-nullsafety.1
  ```
  
  In your dart file, import the library:
