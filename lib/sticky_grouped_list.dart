@@ -334,7 +334,7 @@ class _StickyGroupedListViewState<T, E>
 ///
 /// See [ItemScrollController].
 class GroupedItemScrollController extends ItemScrollController {
-  late _StickyGroupedListViewState? _stickyGroupedListViewState;
+  _StickyGroupedListViewState? _stickyGroupedListViewState;
 
   /// Jumps to the element at [index]. The element will be placed under the
   /// group header.
