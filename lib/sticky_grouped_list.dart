@@ -87,6 +87,14 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
   /// See [ScrollView.reverse].
   final bool reverse;
 
+  /// Whether the extent of the scroll view in the [scrollDirection] should be
+  /// determined by the contents being viewed.
+  ///
+  ///  Defaults to false.
+  ///
+  /// See [ScrollView.shrinkWrap].
+  final bool shrinkWrap;
+
   /// Whether to wrap each child in an [AutomaticKeepAlive].
   ///
   /// See [SliverChildBuilderDelegate.addAutomaticKeepAlives].
@@ -150,6 +158,7 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
     this.semanticChildCount,
     this.initialAlignment = 0,
     this.initialScrollIndex = 0,
+    this.shrinkWrap = false,
   })  : assert(itemBuilder != null || indexedItemBuilder != null),
         super(key: key);
 
@@ -213,6 +222,7 @@ class _StickyGroupedListViewState<T, E>
           addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
           addRepaintBoundaries: widget.addRepaintBoundaries,
           addSemanticIndexes: widget.addSemanticIndexes,
+          shrinkWrap: widget.shrinkWrap,
           itemBuilder: (context, index) {
             int actualIndex = index ~/ 2;
 
