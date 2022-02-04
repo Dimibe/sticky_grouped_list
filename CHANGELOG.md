@@ -1,3 +1,7 @@
+## [2.0.0] - 04.02.2022
+
+* Updated dependencies
+
 ## [2.0.0-nullsafety.2] - 01.08.2021
 
 * Fixed bug 
@@ -20,7 +24,6 @@
 ## [1.1.0] - 06.09.2020
 
 * New feature: The background color of the sticky header is now customizable (only if floatingHeaders option is not used).
-
 
 ## [1.0.0] - 05.09.2020
 
