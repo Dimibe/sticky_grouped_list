@@ -51,6 +51,10 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
   /// Defaults to ASC.
   final StickyGroupedListOrder order;
 
+  /// When set to true the group header of the current visible group will stick
+  ///  on top.
+  final bool useStickyGroupSeparators;
+
   /// Called to build separators for between each item in the list.
   final Widget separator;
 
@@ -142,6 +146,7 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
     this.indexedItemBuilder,
     this.itemComparator,
     this.order = StickyGroupedListOrder.ASC,
+    this.useStickyGroupSeparators = false,
     this.separator = const SizedBox.shrink(),
     this.floatingHeader = false,
     this.stickyHeaderBackgroundColor = const Color(0xffF7F7F7),
@@ -228,7 +233,7 @@ class _StickyGroupedListViewState<T, E>
 
             if (index == hiddenIndex) {
               return Opacity(
-                opacity: 0,
+                opacity: widget.useStickyGroupSeparators ? 0 : 1,
                 child:
                     widget.groupSeparatorBuilder(_sortedElements[actualIndex]),
               );
@@ -239,8 +244,12 @@ class _StickyGroupedListViewState<T, E>
               E prev = widget.groupBy(
                   _sortedElements[actualIndex + (widget.reverse ? 1 : -1)]);
               if (prev != curr) {
-                return widget
-                    .groupSeparatorBuilder(_sortedElements[actualIndex]);
+                _groupHeaderKey = GlobalKey();
+                return Container(
+                  key: _groupHeaderKey,
+                  child: widget
+                      .groupSeparatorBuilder(_sortedElements[actualIndex]),
+                );
               }
               return widget.separator;
             }
@@ -250,7 +259,12 @@ class _StickyGroupedListViewState<T, E>
         StreamBuilder<int>(
           stream: _streamController.stream,
           initialData: _topElementIndex,
-          builder: (_, snapshot) => _showFixedGroupHeader(snapshot.data!),
+          builder: (_, snapshot) {
+            if (snapshot.hasData) {
+              return _showFixedGroupHeader(snapshot.data!);
+            }
+            return Container();
+          },
         )
       ],
     );
@@ -326,10 +340,8 @@ class _StickyGroupedListViewState<T, E>
   }
 
   Widget _showFixedGroupHeader(int index) {
-    if (widget.elements.length > 0) {
-      _groupHeaderKey = GlobalKey();
+    if (widget.useStickyGroupSeparators && widget.elements.isNotEmpty) {
       return Container(
-        key: _groupHeaderKey,
         color:
             widget.floatingHeader ? null : widget.stickyHeaderBackgroundColor,
         width: widget.floatingHeader ? null : MediaQuery.of(context).size.width,
