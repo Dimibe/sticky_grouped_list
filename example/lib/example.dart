@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 List<Element> _elements = <Element>[
   Element(DateTime(2020, 6, 24, 18), 'Got to gym', Icons.fitness_center),
@@ -21,6 +21,8 @@ List<Element> _elements = <Element>[
 ];
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Grouped List View Example'),
+          title: const Text('Grouped List View Example'),
         ),
         body: StickyGroupedListView<Element, DateTime>(
           elements: _elements,
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
           itemComparator: (Element element1, Element element2) =>
               element1.date.compareTo(element2.date),
           floatingHeader: true,
-          groupSeparatorBuilder: (Element element) => Container(
+          groupSeparatorBuilder: (Element element) => SizedBox(
             height: 50,
             child: Align(
               alignment: Alignment.center,
@@ -54,7 +56,7 @@ class MyApp extends StatelessWidget {
                   border: Border.all(
                     color: Colors.blue[300]!,
                   ),
-                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -72,11 +74,12 @@ class MyApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(6.0),
               ),
               elevation: 8.0,
-              margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-              child: Container(
+              margin:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+              child: SizedBox(
                 child: ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
                   leading: Icon(element.icon),
                   title: Text(element.name),
                   trailing: Text('${element.date.hour}:00'),

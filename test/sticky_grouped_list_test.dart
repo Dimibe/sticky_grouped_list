@@ -44,7 +44,7 @@ void main() {
         home: Scaffold(
           body: StickyGroupedListView(
             groupBy: (dynamic element) => element['group'],
-            elements: [],
+            elements: const [],
             groupSeparatorBuilder: _buildGroupSeperator,
             itemBuilder: (context, dynamic element) => Text(element['name']),
           ),

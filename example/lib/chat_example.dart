@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 List<Element> _elements = <Element>[
   Element(DateTime(2020, 6, 24, 9, 25), 'Hello how are you?'),
@@ -28,6 +28,8 @@ List<Element> _elements = <Element>[
 ];
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,11 +40,11 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Chat with Peter'),
+          title: const Text('Chat with Peter'),
         ),
         body: Column(
           children: [
-            Container(
+            SizedBox(
               height: 700,
               child: StickyGroupedListView<Element, DateTime>(
                 elements: _elements,
@@ -51,7 +53,7 @@ class MyApp extends StatelessWidget {
                 groupBy: (Element element) => DateTime(
                     element.date.year, element.date.month, element.date.day),
                 floatingHeader: true,
-                groupSeparatorBuilder: (Element element) => Container(
+                groupSeparatorBuilder: (Element element) => SizedBox(
                   height: 50,
                   child: Align(
                     alignment: Alignment.center,
@@ -62,12 +64,13 @@ class MyApp extends StatelessWidget {
                         border: Border.all(
                           color: Colors.blue[300]!,
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20.0)),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          '${DateFormat.yMMMd().format(element.date)}',
+                          DateFormat.yMMMd().format(element.date),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -79,25 +82,25 @@ class MyApp extends StatelessWidget {
                     alignment: element.swapped
                         ? Alignment.centerRight
                         : Alignment.centerLeft,
-                    child: Container(
+                    child: SizedBox(
                       width: 370,
                       child: Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6.0),
                         ),
                         elevation: 8.0,
-                        margin: new EdgeInsets.symmetric(
+                        margin: const EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 6.0),
-                        child: Container(
+                        child: SizedBox(
                           child: ListTile(
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 20.0, vertical: 10.0),
                             leading: element.swapped
                                 ? Text(DateFormat.Hm().format(element.date))
-                                : Icon(Icons.person),
+                                : const Icon(Icons.person),
                             title: Text(element.name),
                             trailing: element.swapped
-                                ? Icon(Icons.person_outline)
+                                ? const Icon(Icons.person_outline)
                                 : Text(DateFormat.Hm().format(element.date)),
                           ),
                         ),
@@ -107,7 +110,7 @@ class MyApp extends StatelessWidget {
                 },
               ),
             ),
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Enter a new message here'),
