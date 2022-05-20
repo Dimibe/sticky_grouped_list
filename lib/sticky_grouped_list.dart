@@ -10,8 +10,6 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 ///
 /// See [ScrollablePositionedList]
 class StickyGroupedListView<T, E> extends StatefulWidget {
-  final Key? key;
-
   /// Items of which [itemBuilder] or [indexedItemBuilder] produce the list.
   final List<T> elements;
 
@@ -132,8 +130,8 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
   final double initialAlignment;
 
   /// Creates a [StickyGroupedListView].
-  StickyGroupedListView({
-    this.key,
+  const StickyGroupedListView({
+    super.key,
     required this.elements,
     required this.groupBy,
     required this.groupSeparatorBuilder,
@@ -159,8 +157,7 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
     this.initialAlignment = 0,
     this.initialScrollIndex = 0,
     this.shrinkWrap = false,
-  })  : assert(itemBuilder != null || indexedItemBuilder != null),
-        super(key: key);
+  }) : assert(itemBuilder != null || indexedItemBuilder != null);
 
   @override
   State<StatefulWidget> createState() => _StickyGroupedListViewState<T, E>();
@@ -168,12 +165,12 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
 
 class _StickyGroupedListViewState<T, E>
     extends State<StickyGroupedListView<T, E>> {
-  StreamController<int> _streamController = StreamController<int>();
+  final StreamController<int> _streamController = StreamController<int>();
   late ItemPositionsListener _listener;
   late GroupedItemScrollController _controller;
   GlobalKey? _groupHeaderKey;
   List<T> _sortedElements = [];
-  GlobalKey _key = GlobalKey();
+  final GlobalKey _key = GlobalKey();
   int _topElementIndex = 0;
   RenderBox? _headerBox;
   RenderBox? _listBox;
@@ -198,7 +195,7 @@ class _StickyGroupedListViewState<T, E>
 
   @override
   Widget build(BuildContext context) {
-    this._sortedElements = _sortElements();
+    _sortedElements = _sortElements();
     var hiddenIndex = widget.reverse ? _sortedElements.length * 2 - 1 : 0;
     _isSeparator = widget.reverse ? (int i) => i.isOdd : (int i) => i.isEven;
 
@@ -299,7 +296,7 @@ class _StickyGroupedListViewState<T, E>
     List<T> elements = widget.elements;
     if (elements.isNotEmpty) {
       elements.sort((e1, e2) {
-        var compareResult;
+        int? compareResult;
         // compare groups
         if (widget.groupComparator != null) {
           compareResult =
@@ -309,14 +306,14 @@ class _StickyGroupedListViewState<T, E>
               .compareTo(widget.groupBy(e2) as Comparable);
         }
         // compare elements inside group
-        if ((compareResult == null || compareResult == 0)) {
+        if (compareResult == null || compareResult == 0) {
           if (widget.itemComparator != null) {
             compareResult = widget.itemComparator!(e1, e2);
           } else if (e1 is Comparable) {
             compareResult = e1.compareTo(e2);
           }
         }
-        return compareResult;
+        return compareResult!;
       });
     }
     if (widget.order == StickyGroupedListOrder.DESC) {
@@ -326,7 +323,7 @@ class _StickyGroupedListViewState<T, E>
   }
 
   Widget _showFixedGroupHeader(int index) {
-    if (widget.elements.length > 0) {
+    if (widget.elements.isNotEmpty) {
       _groupHeaderKey = GlobalKey();
       return Container(
         key: _groupHeaderKey,
@@ -395,4 +392,5 @@ class GroupedItemScrollController extends ItemScrollController {
 }
 
 /// Used to define the order of a [StickyGroupedListView].
+// ignore: constant_identifier_names
 enum StickyGroupedListOrder { ASC, DESC }
