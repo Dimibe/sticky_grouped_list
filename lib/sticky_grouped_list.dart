@@ -10,8 +10,6 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 ///
 /// See [ScrollablePositionedList]
 class StickyGroupedListView<T, E> extends StatefulWidget {
-  final Key? key;
-
   /// Items of which [itemBuilder] or [indexedItemBuilder] produce the list.
   final List<T> elements;
 
@@ -133,7 +131,7 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
 
   /// Creates a [StickyGroupedListView].
   const StickyGroupedListView({
-    this.key,
+    super.key,
     required this.elements,
     required this.groupBy,
     required this.groupSeparatorBuilder,
@@ -159,8 +157,7 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
     this.initialAlignment = 0,
     this.initialScrollIndex = 0,
     this.shrinkWrap = false,
-  })  : assert(itemBuilder != null || indexedItemBuilder != null),
-        super(key: key);
+  }) : assert(itemBuilder != null || indexedItemBuilder != null);
 
   @override
   State<StatefulWidget> createState() => _StickyGroupedListViewState<T, E>();
