@@ -1,7 +1,8 @@
 
 # Sticky grouped list package for Flutter.
-[![Pub](https://img.shields.io/pub/v/sticky_grouped_list.svg)](https://pub.dev/packages/sticky_grouped_list)
-![CI](https://github.com/Dimibe/sticky_grouped_list/workflows/CI/badge.svg)
+[![pub package](https://img.shields.io/pub/v/sticky_grouped_list.svg)](https://pub.dev/packages/sticky_grouped_list)
+[![package publisher](https://img.shields.io/pub/publisher/sticky_grouped_list.svg)](https://pub.dev/packages/sticky_grouped_list)
+![build](https://github.com/Dimibe/sticky_grouped_list/workflows/CI/badge.svg)
  
 A ListView with sticky headers in which list items can be grouped to sections. Based on [scrollable_positioned_list](https://pub.dev/packages/scrollable_positioned_list).
 
@@ -28,7 +29,7 @@ The list will be scrolled to the end in the initial state and therefore scrollin
  Add the package to your pubspec.yaml:
 
  ```yaml
- sticky_grouped_list: ^2.1.0
+ sticky_grouped_list: ^3.0.0
  ```
  
  In your dart file, import the library:

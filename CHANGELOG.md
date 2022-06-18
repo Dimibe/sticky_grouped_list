@@ -1,3 +1,8 @@
+## [3.0.0] - 18.06.2022
+
+* Dart 2.17.0
+* Flutter lints and version upgrades
+
 ## [2.1.0] - 04.02.2022
 
 * Support Shrink Wrap
