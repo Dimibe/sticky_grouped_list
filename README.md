@@ -1,21 +1,11 @@
 
-# Sticky grouped list package for Flutter.
 [![pub package](https://img.shields.io/pub/v/sticky_grouped_list.svg)](https://pub.dev/packages/sticky_grouped_list)
 [![package publisher](https://img.shields.io/pub/publisher/sticky_grouped_list.svg)](https://pub.dev/packages/sticky_grouped_list)
-![build](https://github.com/Dimibe/sticky_grouped_list/workflows/CI/badge.svg)
+![build](https://github.com/Dimibe/sticky_grouped_list/actions/workflows/main.yaml/badge.svg??branch=main)
  
-A ListView with sticky headers in which list items can be grouped to sections. Based on [scrollable_positioned_list](https://pub.dev/packages/scrollable_positioned_list).
+A flutter `ListView` in which list items can be grouped to sections. Based on [scrollable_positioned_list](https://pub.dev/packages/scrollable_positioned_list). This enables to programatically scroll the list.
 
 <img src="https://raw.githubusercontent.com/Dimibe/sticky_grouped_list/master/assets/new-screenshot-for-readme.png" width="300"> <img src="https://raw.githubusercontent.com/Dimibe/sticky_grouped_list/master/assets/chat.png" width="300">
-
-
-#### Highlight - Chat Dialog
-
-Easy creation of chat-like dialogs.
-Just set the option `reverse` to `true` and the option `order` to `StickyGroupedListOrder.DESC`. A full example can be found in the examples.
-The list will be scrolled to the end in the initial state and therefore scrolling will be against redeaing direction. 
-
-
 
 #### Features
 * Easy creation of chat-like interfaces. 
@@ -71,6 +61,17 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 *`GroupedItemScrollController.srollTo()` and `GroupedItemScrollController.jumpTo()` automatic set the `alignment` so that the item is fully visible aligned under the group header. Both methods take `automaticAlignment` as a additional optional paramenter which needs to be set to true if `alignment` is specified.*
 
 **Also the fields from `ScrollablePositionedList.builder` can be used.**
+
+#### Highlight - Chat Dialog
+
+Easy creation of chat-like dialogs.
+Just set the option `reverse` to `true` and the option `order` to `StickyGroupedListOrder.DESC`. A full example can be found in the examples.
+The list will be scrolled to the end in the initial state and therefore scrolling will be against redeaing direction. 
+
+### Difference between grouped_list and sticky_grouped_list: 
+
+TThe list views in the [GroupedList](https://pub.dev/packages/grouped_list) package are based on the default flutter listview and the silver list. This package is based on the [scrollable_positioned_list](https://pub.dev/packages/scrollable_positioned_list) which enables the possibility to programatically scroll to certain positions in the list. So if you need the ability to programatically scroll the list use the this package otherwise I would recommend to use the [GroupedList](https://pub.dev/packages/grouped_list) package.
+
 
 ### Used packages: 
 | Package name | Copyright | License |
