@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
+/// This example shows the usage of the [StickyGroupedListView] to create an
+/// chat-like application where the elements are grouped by days and the
+/// messages are shown on the left or right of the screen.
 void main() => runApp(const MyApp());
 
 List<Element> _elements = <Element>[

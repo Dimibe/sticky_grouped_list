@@ -1,7 +1,7 @@
 name: example
-description: sticky_grouped_list example
-version: 0.0.1
+description: sticky_grouped_list example.
 publish_to: 'none' 
+version: 0.0.1
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
@@ -18,3 +18,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
+  
+flutter: 
+  uses-material-design: true
