@@ -39,16 +39,36 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
     groupSeparatorBuilder: (dynamic element) => Text(element['group']),
     itemBuilder: (context, dynamic element) => Text(element['name']),
     itemComparator: (e1, e2) => e1['name'].compareTo(e2['name']), // optional
+    elementIdentifier: (element) => element.name // optional - see below for usage
     itemScrollController: itemScrollController, // optional
     order: StickyGroupedListOrder.ASC, // optional
   );
 ```
+
 If you are using the `GroupedItemScrollController` you can scroll or jump to an specific position in the list programatically:
 
+1. By using the index, which will scroll to the element at position [index]:
 ```dart
   itemScrollController.scrollTo(index: 4, duration: Duration(seconds: 2));
   itemScrollController.jumpTo(index: 4);
 ```
+
+2. By using a pre defined element identifier. The identifier is defined by a `Function` which takes one element and returns a unique identifier of any type.
+The methods `scrollToElement` and `jumpToElement` can be used to jump to an element by providing the elements identifier instead of the index: 
+```dart
+  final GroupedItemScrollController itemScrollController = GroupedItemScrollController();
+
+  StickyGroupedListView<dynamic, String>(
+    elements: _elements,
+    elementIdentifier: (element) => element.name
+    itemScrollController: itemScrollController, 
+    [...]
+  );
+
+  itemScrollController.scrollToElement(identifier: 'item-1', duration: Duration(seconds: 2));
+  itemScrollController.jumpToElement(identifier: 'item-2');
+```
+
 
 ### Parameters:
 | Name | Description | Required | Default value |
@@ -61,6 +81,7 @@ If you are using the `GroupedItemScrollController` you can scroll or jump to an 
 | `floatingHeader` | When set to `true` the sticky header will float over the list | no | `false` |
 | `stickyHeaderBackgroundColor` | Defines the background color of the sticky header | no | `Color(0xffF7F7F7)` |
 |`itemScrollController`| Instead of an `ItemScrollController` a `GroupedItemScrollController` needs to be provided. | no | - |
+|`elementIdentifier`| Used by `itemScrollController` and defines the unique identifier for each element. | no | - |
 | `order` | Change to `StickyGroupedListOrder.DESC` to reverse the group sorting | no | `StickyGroupedListOrder.ASC` |
 | `groupComparator` | Can be used to define a custom sorting for the groups. Otherwise the natural sorting order is used | no | - |
 | `itemComparator` | Can be used to define a custom sorting for the elements inside each group. Otherwise the natural sorting order is used | no | - |

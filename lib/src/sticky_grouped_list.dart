@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
+import 'package:meta/meta.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'sticky_grouped_list_order.dart';
@@ -43,6 +44,13 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
   /// 0 <= element, index < elements.length
   final Widget Function(BuildContext context, T element, int index)?
       indexedItemBuilder;
+
+  /// Used to clearly indentify an element. The returned value can be of any
+  /// type but must be unique for each element.
+  ///
+  /// Used by [GroupedItemScrollController] to scroll and jump to a specific
+  /// element.
+  final dynamic Function(T element)? elementIdentifier;
 
   /// Whether the sorting of the list is ascending or descending.
   ///
@@ -139,6 +147,7 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
     this.itemBuilder,
     this.indexedItemBuilder,
     this.itemComparator,
+    this.elementIdentifier,
     this.order = StickyGroupedListOrder.ASC,
     this.separator = const SizedBox.shrink(),
     this.floatingHeader = false,
@@ -160,28 +169,35 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
   }) : assert(itemBuilder != null || indexedItemBuilder != null);
 
   @override
-  State<StatefulWidget> createState() => _StickyGroupedListViewState<T, E>();
+  State<StatefulWidget> createState() => StickyGroupedListViewState<T, E>();
 }
 
-class _StickyGroupedListViewState<T, E>
+@internal
+class StickyGroupedListViewState<T, E>
     extends State<StickyGroupedListView<T, E>> {
+  /// Used within [GroupedItemScrollController].
+  @protected
+  List<T> sortedElements = [];
+
+  /// Used within [GroupedItemScrollController].
+  @protected
+  double? headerDimension;
+
   final StreamController<int> _streamController = StreamController<int>();
   late ItemPositionsListener _listener;
   late GroupedItemScrollController _controller;
   GlobalKey? _groupHeaderKey;
-  List<T> _sortedElements = [];
   final GlobalKey _key = GlobalKey();
   int _topElementIndex = 0;
   RenderBox? _headerBox;
   RenderBox? _listBox;
-  double? _headerDimension;
   bool Function(int)? _isSeparator;
 
   @override
   void initState() {
     super.initState();
     _controller = widget.itemScrollController ?? GroupedItemScrollController();
-    _controller._bind(this);
+    _controller._attach(this);
     _listener = widget.itemPositionsListener ?? ItemPositionsListener.create();
     _listener.itemPositions.addListener(_positionListener);
   }
@@ -194,9 +210,27 @@ class _StickyGroupedListViewState<T, E>
   }
 
   @override
+  void deactivate() {
+    _controller._detach();
+    super.deactivate();
+  }
+
+  @override
+  void didUpdateWidget(StickyGroupedListView<T, E> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.itemScrollController?._stickyGroupedListViewState == this) {
+      oldWidget.itemScrollController?._detach();
+    }
+    if (widget.itemScrollController?._stickyGroupedListViewState != this) {
+      widget.itemScrollController?._detach();
+      widget.itemScrollController?._attach(this);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    _sortedElements = _sortElements();
-    var hiddenIndex = widget.reverse ? _sortedElements.length * 2 - 1 : 0;
+    sortedElements = _sortElements();
+    var hiddenIndex = widget.reverse ? sortedElements.length * 2 - 1 : 0;
     _isSeparator = widget.reverse ? (int i) => i.isOdd : (int i) => i.isEven;
 
     return Stack(
@@ -215,7 +249,7 @@ class _StickyGroupedListViewState<T, E>
           semanticChildCount: widget.semanticChildCount,
           padding: widget.padding,
           reverse: widget.reverse,
-          itemCount: _sortedElements.length * 2,
+          itemCount: sortedElements.length * 2,
           addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
           addRepaintBoundaries: widget.addRepaintBoundaries,
           addSemanticIndexes: widget.addSemanticIndexes,
@@ -227,17 +261,17 @@ class _StickyGroupedListViewState<T, E>
               return Opacity(
                 opacity: 0,
                 child:
-                    widget.groupSeparatorBuilder(_sortedElements[actualIndex]),
+                    widget.groupSeparatorBuilder(sortedElements[actualIndex]),
               );
             }
 
             if (_isSeparator!(index)) {
-              E curr = widget.groupBy(_sortedElements[actualIndex]);
+              E curr = widget.groupBy(sortedElements[actualIndex]);
               E prev = widget.groupBy(
-                  _sortedElements[actualIndex + (widget.reverse ? 1 : -1)]);
+                  sortedElements[actualIndex + (widget.reverse ? 1 : -1)]);
               if (prev != curr) {
                 return widget
-                    .groupSeparatorBuilder(_sortedElements[actualIndex]);
+                    .groupSeparatorBuilder(sortedElements[actualIndex]);
               }
               return widget.separator;
             }
@@ -255,9 +289,9 @@ class _StickyGroupedListViewState<T, E>
 
   Widget _buildItem(context, int actualIndex) {
     return widget.indexedItemBuilder == null
-        ? widget.itemBuilder!(context, _sortedElements[actualIndex])
+        ? widget.itemBuilder!(context, sortedElements[actualIndex])
         : widget.indexedItemBuilder!(
-            context, _sortedElements[actualIndex], actualIndex);
+            context, sortedElements[actualIndex], actualIndex);
   }
 
   _positionListener() {
@@ -266,7 +300,7 @@ class _StickyGroupedListViewState<T, E>
     double headerHeight = _headerBox?.size.height ?? 0;
     _listBox ??= _key.currentContext?.findRenderObject() as RenderBox?;
     double height = _listBox?.size.height ?? 0;
-    _headerDimension = headerHeight / height;
+    headerDimension = headerHeight / height;
 
     ItemPosition reducePositions(ItemPosition pos, ItemPosition current) {
       if (widget.reverse) {
@@ -278,13 +312,13 @@ class _StickyGroupedListViewState<T, E>
     ItemPosition currentItem = _listener.itemPositions.value
         .where((ItemPosition position) =>
             !_isSeparator!(position.index) &&
-            position.itemTrailingEdge > _headerDimension!)
+            position.itemTrailingEdge > headerDimension!)
         .reduce(reducePositions);
 
     int index = currentItem.index ~/ 2;
     if (_topElementIndex != index) {
-      E curr = widget.groupBy(_sortedElements[index]);
-      E prev = widget.groupBy(_sortedElements[_topElementIndex]);
+      E curr = widget.groupBy(sortedElements[index]);
+      E prev = widget.groupBy(sortedElements[_topElementIndex]);
       if (prev != curr) {
         _topElementIndex = index;
         _streamController.add(_topElementIndex);
@@ -330,10 +364,19 @@ class _StickyGroupedListViewState<T, E>
         color:
             widget.floatingHeader ? null : widget.stickyHeaderBackgroundColor,
         width: widget.floatingHeader ? null : MediaQuery.of(context).size.width,
-        child: widget.groupSeparatorBuilder(_sortedElements[index]),
+        child: widget.groupSeparatorBuilder(sortedElements[index]),
       );
     }
     return Container();
+  }
+
+  /// The purpose of this method is to wrap [widget.elementIdentifier] and
+  /// type cast the provided [element] to [T].
+  /// Since the [GroupedItemScrollController] has no information about [T] it's
+  /// not possible to call [widget.elementIdentifier] directly.
+  @protected
+  dynamic getIdentifier(dynamic element) {
+    return widget.elementIdentifier!(element as T);
   }
 }
 
@@ -341,7 +384,13 @@ class _StickyGroupedListViewState<T, E>
 ///
 /// See [ItemScrollController].
 class GroupedItemScrollController extends ItemScrollController {
-  _StickyGroupedListViewState? _stickyGroupedListViewState;
+  StickyGroupedListViewState? _stickyGroupedListViewState;
+
+  /// Whether any [StickyGroupedListView] objects are attached this object.
+  ///
+  /// If `false`, then [jumpTo] and [scrollTo] must not be called.
+  @override
+  bool get isAttached => _stickyGroupedListViewState != null;
 
   /// Jumps to the element at [index]. The element will be placed under the
   /// group header.
@@ -355,7 +404,7 @@ class GroupedItemScrollController extends ItemScrollController {
     bool automaticAlignment = true,
   }) {
     if (automaticAlignment) {
-      alignment = _stickyGroupedListViewState?._headerDimension ?? alignment;
+      alignment = _stickyGroupedListViewState!.headerDimension ?? alignment;
     }
     return super.jumpTo(index: index * 2 + 1, alignment: alignment);
   }
@@ -375,7 +424,7 @@ class GroupedItemScrollController extends ItemScrollController {
     List<double> opacityAnimationWeights = const [40, 20, 40],
   }) {
     if (automaticAlignment) {
-      alignment = _stickyGroupedListViewState?._headerDimension ?? alignment;
+      alignment = _stickyGroupedListViewState!.headerDimension ?? alignment;
     }
     return super.scrollTo(
       index: index * 2 + 1,
@@ -386,8 +435,54 @@ class GroupedItemScrollController extends ItemScrollController {
     );
   }
 
-  void _bind(_StickyGroupedListViewState stickyGroupedListViewState) {
+  void jumpToElement({
+    required dynamic identifier,
+    double alignment = 0,
+    bool automaticAlignment = true,
+  }) {
+    return jumpTo(
+      index: _findIndexByIdentifier(identifier),
+      alignment: alignment,
+      automaticAlignment: automaticAlignment,
+    );
+  }
+
+  Future<void> scrollToElement({
+    required dynamic identifier,
+    required Duration duration,
+    double alignment = 0,
+    bool automaticAlignment = true,
+    Curve curve = Curves.linear,
+    List<double> opacityAnimationWeights = const [40, 20, 40],
+  }) {
+    return scrollTo(
+      index: _findIndexByIdentifier(identifier),
+      duration: duration,
+      alignment: alignment,
+      automaticAlignment: automaticAlignment,
+      curve: curve,
+      opacityAnimationWeights: opacityAnimationWeights,
+    );
+  }
+
+  int _findIndexByIdentifier(dynamic identifier) {
+    var elements = _stickyGroupedListViewState!.sortedElements;
+    var identify = _stickyGroupedListViewState!.getIdentifier;
+
+    for (int i = 0; i < elements.length; i++) {
+      if (identify(elements[i]) == identifier) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  void _attach(StickyGroupedListViewState stickyGroupedListViewState) {
     assert(_stickyGroupedListViewState == null);
     _stickyGroupedListViewState = stickyGroupedListViewState;
+  }
+
+  void _detach() {
+    _stickyGroupedListViewState = null;
   }
 }
