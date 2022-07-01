@@ -349,10 +349,11 @@ class GroupedItemScrollController extends ItemScrollController {
   ///
   /// See [ItemScrollController.jumpTo]
   @override
-  void jumpTo(
-      {required int index,
-      double alignment = 0,
-      bool automaticAlignment = true}) {
+  void jumpTo({
+    required int index,
+    double alignment = 0,
+    bool automaticAlignment = true,
+  }) {
     if (automaticAlignment) {
       alignment = _stickyGroupedListViewState?._headerDimension ?? alignment;
     }
@@ -367,9 +368,9 @@ class GroupedItemScrollController extends ItemScrollController {
   @override
   Future<void> scrollTo({
     required int index,
+    required Duration duration,
     double alignment = 0,
     bool automaticAlignment = true,
-    required Duration duration,
     Curve curve = Curves.linear,
     List<double> opacityAnimationWeights = const [40, 20, 40],
   }) {

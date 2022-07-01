@@ -3,11 +3,11 @@
 [![package publisher](https://img.shields.io/pub/publisher/sticky_grouped_list.svg)](https://pub.dev/packages/sticky_grouped_list)
 ![build](https://github.com/Dimibe/sticky_grouped_list/actions/workflows/main.yaml/badge.svg??branch=main)
  
-A flutter `ListView` in which list items can be grouped to sections. Based on [scrollable_positioned_list](https://pub.dev/packages/scrollable_positioned_list). This enables to programatically scroll the list.
+A `ListView` in which list items can be grouped to sections. Based on [scrollable_positioned_list](https://pub.dev/packages/scrollable_positioned_list), which enables programatically scrolling of the list.
 
 <img src="https://raw.githubusercontent.com/Dimibe/sticky_grouped_list/master/assets/new-screenshot-for-readme.png" width="300"> <img src="https://raw.githubusercontent.com/Dimibe/sticky_grouped_list/master/assets/chat.png" width="300">
 
-#### Features
+### Features
 * Easy creation of chat-like interfaces. 
 * List items can be separated in groups.
 * For the groups an individual header can be set.
@@ -31,15 +31,23 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
  Create a `StickyGroupedListView` Widget:
  
  ```Dart
+  final GroupedItemScrollController itemScrollController = GroupedItemScrollController();
+
   StickyGroupedListView<dynamic, String>(
     elements: _elements,
     groupBy: (dynamic element) => element['group'],
     groupSeparatorBuilder: (dynamic element) => Text(element['group']),
     itemBuilder: (context, dynamic element) => Text(element['name']),
-    itemComparator: (element1, element2) => element1['name'].compareTo(element2['name']), // optional
-    itemScrollController: GroupedItemScrollController(), // optional
+    itemComparator: (e1, e2) => e1['name'].compareTo(e2['name']), // optional
+    itemScrollController: itemScrollController, // optional
     order: StickyGroupedListOrder.ASC, // optional
-  ),
+  );
+```
+If you are using the `GroupedItemScrollController` you can scroll or jump to an specific position in the list programatically:
+
+```dart
+  itemScrollController.scrollTo(index: 4, duration: Duration(seconds: 2));
+  itemScrollController.jumpTo(index: 4);
 ```
 
 ### Parameters:
@@ -62,18 +70,18 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
 **Also the fields from `ScrollablePositionedList.builder` can be used.**
 
-#### Highlight - Chat Dialog
+## Highlight - Chat Dialog
 
 Easy creation of chat-like dialogs.
 Just set the option `reverse` to `true` and the option `order` to `StickyGroupedListOrder.DESC`. A full example can be found in the examples.
 The list will be scrolled to the end in the initial state and therefore scrolling will be against redeaing direction. 
 
-### Difference between grouped_list and sticky_grouped_list: 
+## Difference between grouped_list and sticky_grouped_list: 
 
 TThe list views in the [GroupedList](https://pub.dev/packages/grouped_list) package are based on the default flutter listview and the silver list. This package is based on the [scrollable_positioned_list](https://pub.dev/packages/scrollable_positioned_list) which enables the possibility to programatically scroll to certain positions in the list. So if you need the ability to programatically scroll the list use the this package otherwise I would recommend to use the [GroupedList](https://pub.dev/packages/grouped_list) package.
 
 
-### Used packages: 
+## Used packages: 
 | Package name | Copyright | License |
 |----|----|----|
 |[scrollable_positioned_list](https://pub.dev/packages/scrollable_positioned_list) | Copyright 2018 the Dart project authors, Inc. All rights reserved | [BSD 3-Clause "New" or "Revised" License](https://github.com/Dimibe/sticky_grouped_list/blob/master/LICENSE) |
