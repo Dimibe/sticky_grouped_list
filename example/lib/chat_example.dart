@@ -51,71 +51,77 @@ class MyApp extends StatelessWidget {
                 order: StickyGroupedListOrder.DESC,
                 reverse: true,
                 groupBy: (Element element) => DateTime(
-                    element.date.year, element.date.month, element.date.day),
-                floatingHeader: true,
-                groupSeparatorBuilder: (Element element) => SizedBox(
-                  height: 50,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      width: 120,
-                      decoration: BoxDecoration(
-                        color: Colors.blue[300],
-                        border: Border.all(
-                          color: Colors.blue[300]!,
-                        ),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20.0)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          DateFormat.yMMMd().format(element.date),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ),
+                  element.date.year,
+                  element.date.month,
+                  element.date.day,
                 ),
-                itemBuilder: (_, Element element) {
-                  return Align(
-                    alignment: element.swapped
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                    child: SizedBox(
-                      width: 370,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0),
-                        ),
-                        elevation: 8.0,
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 6.0),
-                        child: SizedBox(
-                          child: ListTile(
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 10.0),
-                            leading: element.swapped
-                                ? Text(DateFormat.Hm().format(element.date))
-                                : const Icon(Icons.person),
-                            title: Text(element.name),
-                            trailing: element.swapped
-                                ? const Icon(Icons.person_outline)
-                                : Text(DateFormat.Hm().format(element.date)),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
+                floatingHeader: true,
+                groupSeparatorBuilder: _getGroupSeparator,
+                itemBuilder: _getItem,
               ),
             ),
             const TextField(
               decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Enter a new message here'),
+                border: InputBorder.none,
+                hintText: 'Enter a new message here',
+              ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _getGroupSeparator(Element element) {
+    return SizedBox(
+      height: 50,
+      child: Align(
+        alignment: Alignment.center,
+        child: Container(
+          width: 120,
+          decoration: BoxDecoration(
+            color: Colors.blue[300],
+            border: Border.all(
+              color: Colors.blue[300]!,
+            ),
+            borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              DateFormat.yMMMd().format(element.date),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _getItem(BuildContext ctx, Element element) {
+    return Align(
+      alignment: element.swapped ? Alignment.centerRight : Alignment.centerLeft,
+      child: SizedBox(
+        width: 370,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(6.0),
+          ),
+          elevation: 8.0,
+          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+          child: SizedBox(
+            child: ListTile(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              leading: element.swapped
+                  ? Text(DateFormat.Hm().format(element.date))
+                  : const Icon(Icons.person),
+              title: Text(element.name),
+              trailing: element.swapped
+                  ? const Icon(Icons.person_outline)
+                  : Text(DateFormat.Hm().format(element.date)),
+            ),
+          ),
         ),
       ),
     );

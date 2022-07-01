@@ -38,55 +38,63 @@ class MyApp extends StatelessWidget {
         body: StickyGroupedListView<Element, DateTime>(
           elements: _elements,
           order: StickyGroupedListOrder.ASC,
-          groupBy: (Element element) =>
-              DateTime(element.date.year, element.date.month, element.date.day),
+          groupBy: (Element element) => DateTime(
+            element.date.year,
+            element.date.month,
+            element.date.day,
+          ),
           groupComparator: (DateTime value1, DateTime value2) =>
               value2.compareTo(value1),
           itemComparator: (Element element1, Element element2) =>
               element1.date.compareTo(element2.date),
           floatingHeader: true,
-          groupSeparatorBuilder: (Element element) => SizedBox(
-            height: 50,
-            child: Align(
-              alignment: Alignment.center,
-              child: Container(
-                width: 120,
-                decoration: BoxDecoration(
-                  color: Colors.blue[300],
-                  border: Border.all(
-                    color: Colors.blue[300]!,
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    '${element.date.day}. ${element.date.month}, ${element.date.year}',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
+          groupSeparatorBuilder: _getGroupSeparator,
+          itemBuilder: _getItem,
+        ),
+      ),
+    );
+  }
+
+  Widget _getGroupSeparator(Element element) {
+    return SizedBox(
+      height: 50,
+      child: Align(
+        alignment: Alignment.center,
+        child: Container(
+          width: 120,
+          decoration: BoxDecoration(
+            color: Colors.blue[300],
+            border: Border.all(
+              color: Colors.blue[300]!,
+            ),
+            borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              '${element.date.day}. ${element.date.month}, ${element.date.year}',
+              textAlign: TextAlign.center,
             ),
           ),
-          itemBuilder: (_, Element element) {
-            return Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6.0),
-              ),
-              elevation: 8.0,
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-              child: SizedBox(
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  leading: Icon(element.icon),
-                  title: Text(element.name),
-                  trailing: Text('${element.date.hour}:00'),
-                ),
-              ),
-            );
-          },
+        ),
+      ),
+    );
+  }
+
+  Widget _getItem(BuildContext ctx, Element element) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6.0),
+      ),
+      elevation: 8.0,
+      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      child: SizedBox(
+        child: ListTile(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          leading: Icon(element.icon),
+          title: Text(element.name),
+          trailing: Text('${element.date.hour}:00'),
         ),
       ),
     );
