@@ -9,7 +9,7 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 void main() => runApp(MyApp());
 
 List<Element> _elements =
-    List.generate(100, (index) => Element('Item $index', index ~/ 10));
+    List.generate(100, (index) => Element(index, 'Item $index', index ~/ 10));
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
         body: StickyGroupedListView<Element, int>(
           elements: _elements,
           groupBy: (Element element) => element.group,
+          elementIdentifier: (Element element) => element.id,
           floatingHeader: true,
           groupSeparatorBuilder: _getGroupSeparator,
           itemBuilder: _getItem,
@@ -39,8 +40,8 @@ class MyApp extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.arrow_forward),
           onPressed: () {
-            itemScrollController.jumpTo(
-              index: 50,
+            itemScrollController.jumpToElement(
+              identifier: 50,
             );
           },
         ),
@@ -90,8 +91,9 @@ class MyApp extends StatelessWidget {
 }
 
 class Element {
+  int id;
   String name;
   int group;
 
-  Element(this.name, this.group);
+  Element(this.id, this.name, this.group);
 }
