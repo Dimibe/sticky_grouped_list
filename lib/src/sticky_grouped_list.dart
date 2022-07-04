@@ -244,7 +244,7 @@ class StickyGroupedListViewState<T, E>
           physics: widget.physics,
           itemPositionsListener: _listener,
           initialAlignment: widget.initialAlignment,
-          initialScrollIndex: widget.initialScrollIndex,
+          initialScrollIndex: widget.initialScrollIndex * 2,
           minCacheExtent: widget.minCacheExtent,
           semanticChildCount: widget.semanticChildCount,
           padding: widget.padding,
