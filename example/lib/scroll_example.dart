@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
           floatingHeader: true,
           groupSeparatorBuilder: _getGroupSeparator,
           itemBuilder: _getItem,
+          initialScrollIndex: 10,
           itemScrollController: itemScrollController,
         ),
         floatingActionButton: FloatingActionButton(
