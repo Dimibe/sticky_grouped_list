@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
   final itemScrollController = GroupedItemScrollController();
+  final itemPositionsListener = ItemPositionsListener.create();
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
           floatingHeader: true,
           groupSeparatorBuilder: _getGroupSeparator,
           itemBuilder: _getItem,
+          itemPositionsListener: itemPositionsListener,
           initialScrollIndex: 10,
           itemScrollController: itemScrollController,
         ),
