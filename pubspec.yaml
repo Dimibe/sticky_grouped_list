@@ -1,6 +1,6 @@
 name: sticky_grouped_list
 description: A ScrollablePositionedList where the list items can be grouped into sections.
-version: 3.0.0
+version: 3.1.0
 homepage: https://begnis.dev
 repository: https://github.com/Dimibe/sticky_grouped_list
 
@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   scrollable_positioned_list: ^0.3.2
-  meta: 1.7.0
+  meta: ^1.7.0
 
 dev_dependencies:
   flutter_test:

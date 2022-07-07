@@ -1,3 +1,9 @@
+## [3.1.0] - 07.07.2022
+
+* Support for jump/scroll to element
+* Fix initialScrollIndex 
+* Expose ItemPositionsListener 
+
 ## [3.0.0] - 18.06.2022
 
 * Dart 2.17.0

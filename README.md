@@ -19,7 +19,7 @@ A `ListView` in which list items can be grouped to sections. Based on [scrollabl
  Add the package to your pubspec.yaml:
 
  ```yaml
- sticky_grouped_list: ^3.0.0
+ sticky_grouped_list: ^3.1.0
  ```
  
  In your dart file, import the library:
