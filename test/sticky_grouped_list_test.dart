@@ -12,7 +12,7 @@ final List _elements = [
   {'name': 'Danny', 'group': 'Team C'},
 ];
 void main() {
-  Widget _buildGroupSeperator(dynamic element) {
+  Widget buildGroupSeperator(dynamic element) {
     return Text(element['group']);
   }
 
@@ -24,7 +24,7 @@ void main() {
             groupBy: (dynamic element) => element['group'],
             elements: _elements,
             order: StickyGroupedListOrder.DESC,
-            groupSeparatorBuilder: _buildGroupSeperator,
+            groupSeparatorBuilder: buildGroupSeperator,
             itemBuilder: (context, dynamic element) => Text(element['name']),
           ),
         ),
@@ -45,7 +45,7 @@ void main() {
           body: StickyGroupedListView(
             groupBy: (dynamic element) => element['group'],
             elements: const [],
-            groupSeparatorBuilder: _buildGroupSeperator,
+            groupSeparatorBuilder: buildGroupSeperator,
             itemBuilder: (context, dynamic element) => Text(element['name']),
           ),
         ),
@@ -61,7 +61,7 @@ void main() {
           body: StickyGroupedListView(
             groupBy: (dynamic element) => element['group'],
             elements: _elements,
-            groupSeparatorBuilder: _buildGroupSeperator,
+            groupSeparatorBuilder: buildGroupSeperator,
             itemBuilder: (context, dynamic element) => Text(element['name']),
           ),
         ),
