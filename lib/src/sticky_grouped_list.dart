@@ -278,11 +278,16 @@ class StickyGroupedListViewState<T, E>
             return _buildItem(context, actualIndex);
           },
         ),
-        StreamBuilder<int>(
-          stream: _streamController.stream,
-          initialData: _topElementIndex,
-          builder: (_, snapshot) => _showFixedGroupHeader(snapshot.data!),
-        )
+        Padding(
+          padding: EdgeInsets.only(
+            top: widget.padding?.top ?? 0,
+          ),
+          child: StreamBuilder<int>(
+            stream: _streamController.stream,
+            initialData: _topElementIndex,
+            builder: (_, snapshot) => _showFixedGroupHeader(snapshot.data!),
+          ),
+        ),
       ],
     );
   }
