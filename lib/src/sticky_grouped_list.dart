@@ -317,9 +317,14 @@ class StickyGroupedListViewState<T, E>
 
     int index = currentItem.index ~/ 2;
     if (_topElementIndex != index) {
-      E curr = widget.groupBy(sortedElements[index]);
-      E prev = widget.groupBy(sortedElements[_topElementIndex]);
-      if (prev != curr) {
+      if(_topElementIndex<sortedElements.length) {
+        E curr = widget.groupBy(sortedElements[index]);
+        E prev = widget.groupBy(sortedElements[_topElementIndex]);
+        if (prev != curr) {
+          _topElementIndex = index;
+          _streamController.add(_topElementIndex);
+        }
+      } else {
         _topElementIndex = index;
         _streamController.add(_topElementIndex);
       }
@@ -357,7 +362,7 @@ class StickyGroupedListViewState<T, E>
   }
 
   Widget _showFixedGroupHeader(int index) {
-    if (widget.elements.isNotEmpty) {
+    if (widget.elements.isNotEmpty && index<sortedElements.length) {
       _groupHeaderKey = GlobalKey();
       return Container(
         key: _groupHeaderKey,
