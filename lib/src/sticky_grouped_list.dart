@@ -443,16 +443,18 @@ class GroupedItemScrollController extends ItemScrollController {
     );
   }
 
-  void jumpToElement({
+  int jumpToElement({
     required dynamic identifier,
     double alignment = 0,
     bool automaticAlignment = true,
   }) {
-    return jumpTo(
-      index: _findIndexByIdentifier(identifier),
+    final index = _findIndexByIdentifier(identifier);
+    jumpTo(
+      index: index,
       alignment: alignment,
       automaticAlignment: automaticAlignment,
     );
+    return index;
   }
 
   Future<int> scrollToElement({
