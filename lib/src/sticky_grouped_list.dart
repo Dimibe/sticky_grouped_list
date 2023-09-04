@@ -430,7 +430,7 @@ class GroupedItemScrollController extends ItemScrollController {
     bool automaticAlignment = true,
     Curve curve = Curves.linear,
     List<double> opacityAnimationWeights = const [40, 20, 40],
-  }) {
+  }) async {
     if (automaticAlignment) {
       alignment = _stickyGroupedListViewState!.headerDimension ?? alignment;
     }
@@ -455,22 +455,24 @@ class GroupedItemScrollController extends ItemScrollController {
     );
   }
 
-  Future<void> scrollToElement({
+  Future<int> scrollToElement({
     required dynamic identifier,
     required Duration duration,
     double alignment = 0,
     bool automaticAlignment = true,
     Curve curve = Curves.linear,
     List<double> opacityAnimationWeights = const [40, 20, 40],
-  }) {
-    return scrollTo(
-      index: _findIndexByIdentifier(identifier),
+  }) async {
+    final index = _findIndexByIdentifier(identifier);
+    scrollTo(
+      index: index,
       duration: duration,
       alignment: alignment,
       automaticAlignment: automaticAlignment,
       curve: curve,
       opacityAnimationWeights: opacityAnimationWeights,
     );
+    return Future.value(index);
   }
 
   int _findIndexByIdentifier(dynamic identifier) {
