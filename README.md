@@ -35,6 +35,7 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
   StickyGroupedListView<dynamic, String>(
     elements: _elements,
+    sort:true,
     groupBy: (dynamic element) => element['group'],
     groupSeparatorBuilder: (dynamic element) => Text(element['group']),
     itemBuilder: (context, dynamic element) => Text(element['name']),
@@ -71,21 +72,22 @@ The methods `scrollToElement` and `jumpToElement` can be used to jump to an elem
 
 
 ### Parameters:
-| Name | Description | Required | Default value |
-|----|----|----|----|
-|`elements`| A list of the data you want to display in the list | required | - |
-|`itemBuilder` / `indexedItemBuilder`| Function which returns an Widget which defines the item. `indexedItemBuilder` provides the current index as well. If both are defined `indexedItemBuilder` is preferred| yes, either of them | - |
-|`groupBy` |Function which maps an element to its grouped value | required | - |
-|`groupSeparatorBuilder`| Function which gets a element and returns an Widget which defines the group header separator | required | - |
-|`separator` | A Widget which defines a separator between items inside a group | no | no separator |
-| `floatingHeader` | When set to `true` the sticky header will float over the list | no | `false` |
-| `stickyHeaderBackgroundColor` | Defines the background color of the sticky header | no | `Color(0xffF7F7F7)` |
-|`itemScrollController`| Instead of an `ItemScrollController` a `GroupedItemScrollController` needs to be provided. | no | - |
-|`elementIdentifier`| Used by `itemScrollController` and defines the unique identifier for each element. | no | - |
-| `order` | Change to `StickyGroupedListOrder.DESC` to reverse the group sorting | no | `StickyGroupedListOrder.ASC` |
-| `groupComparator` | Can be used to define a custom sorting for the groups. Otherwise the natural sorting order is used | no | - |
-| `itemComparator` | Can be used to define a custom sorting for the elements inside each group. Otherwise the natural sorting order is used | no | - |
-|`reverse`| Scrolls in opposite from reading direction (Starting at bottom and scrolling up). Same as in scrollable_positioned_list. | no | false |
+| Name                                 | Description                                                                                                                                                             | Required | Default value                |
+|--------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----|------------------------------|
+| `elements`                           | A list of the data you want to display in the list                                                                                                                      | required | -                            |
+| `itemBuilder` / `indexedItemBuilder` | Function which returns an Widget which defines the item. `indexedItemBuilder` provides the current index as well. If both are defined `indexedItemBuilder` is preferred | yes, either of them | -                            |
+| `groupBy`                            | Function which maps an element to its grouped value                                                                                                                     | required | -                            |
+| `groupSeparatorBuilder`              | Function which gets a element and returns an Widget which defines the group header separator                                                                            | required | -                            |
+| `separator`                          | A Widget which defines a separator between items inside a group                                                                                                         | no | no separator                 |
+| `floatingHeader`                     | When set to `true` the sticky header will float over the list                                                                                                           | no | `false`                      |
+| `stickyHeaderBackgroundColor`        | Defines the background color of the sticky header                                                                                                                       | no | `Color(0xffF7F7F7)`          |
+| `itemScrollController`               | Instead of an `ItemScrollController` a `GroupedItemScrollController` needs to be provided.                                                                              | no | -                            |
+| `elementIdentifier`                  | Used by `itemScrollController` and defines the unique identifier for each element.                                                                                      | no | -                            |
+| `order`                              | Change to `StickyGroupedListOrder.DESC` to reverse the group sorting                                                                                                    | no | `StickyGroupedListOrder.ASC` |
+| `groupComparator`                    | Can be used to define a custom sorting for the groups. Otherwise the natural sorting order is used                                                                      | no | -                            |
+| `itemComparator`                     | Can be used to define a custom sorting for the elements inside each group. Otherwise the natural sorting order is used                                                  | no | -                            |
+| `reverse`                            | Scrolls in opposite from reading direction (Starting at bottom and scrolling up). Same as in scrollable_positioned_list.                                                | no | false                        |
+| `sort`                               | Enables sorting by given order.                                                                                                                                         | no | true                         |
 
 *`GroupedItemScrollController.srollTo()` and `GroupedItemScrollController.jumpTo()` automatic set the `alignment` so that the item is fully visible aligned under the group header. Both methods take `automaticAlignment` as a additional optional paramenter which needs to be set to true if `alignment` is specified.*
 
