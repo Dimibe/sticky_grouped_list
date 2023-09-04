@@ -50,8 +50,8 @@ If you are using the `GroupedItemScrollController` you can scroll or jump to an 
 
 1. By using the index, which will scroll to the element at position [index]:
 ```dart
-  final scrolledItemIndex = await itemScrollController.scrollTo(index: 4, duration: Duration(seconds: 2));
-  final scrolledItemIndexJump = itemScrollController.jumpTo(index: 4);
+  itemScrollController.scrollTo(index: 4, duration: Duration(seconds: 2));
+  itemScrollController.jumpTo(index: 4);
 ```
 
 2. By using a pre defined element identifier. The identifier is defined by a `Function` which takes one element and returns a unique identifier of any type.
@@ -66,8 +66,10 @@ The methods `scrollToElement` and `jumpToElement` can be used to jump to an elem
     [...]
   );
 
-  itemScrollController.scrollToElement(identifier: 'item-1', duration: Duration(seconds: 2));
-  itemScrollController.jumpToElement(identifier: 'item-2');
+
+  final scrolledItemIndex = itemScrollController.scrollToElement(identifier: 'item-1', duration: Duration(seconds: 2));
+  final scrolledItemIndexOnJump = itemScrollController.jumpToElement(identifier: 'item-2');
+
 ```
 
 
