@@ -36,6 +36,9 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
   StickyGroupedListView<dynamic, String>(
     elements: _elements,
     sort:true,
+    onScrolLEnd: (isBottomReached) {
+     
+    }
     groupBy: (dynamic element) => element['group'],
     groupSeparatorBuilder: (dynamic element) => Text(element['group']),
     itemBuilder: (context, dynamic element) => Text(element['name']),
@@ -90,6 +93,8 @@ The methods `scrollToElement` and `jumpToElement` can be used to jump to an elem
 | `itemComparator`                     | Can be used to define a custom sorting for the elements inside each group. Otherwise the natural sorting order is used                                                  | no | -                            |
 | `reverse`                            | Scrolls in opposite from reading direction (Starting at bottom and scrolling up). Same as in scrollable_positioned_list.                                                | no | false                        |
 | `sort`                               | Enables sorting by given order.                                                                                                                                         | no | true                         |
+| `onScrollEnd`                               | calls onScroll reached bottom or top                                                                                                                                         | - | -                         |
+
 
 *`GroupedItemScrollController.srollTo()` and `GroupedItemScrollController.jumpTo()` automatic set the `alignment` so that the item is fully visible aligned under the group header. Both methods take `automaticAlignment` as a additional optional paramenter which needs to be set to true if `alignment` is specified.*
 
