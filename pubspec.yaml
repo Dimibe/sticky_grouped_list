@@ -5,16 +5,16 @@ homepage: https://begnis.dev
 repository: https://github.com/Dimibe/sticky_grouped_list
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.17.0 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  scrollable_positioned_list: ^0.3.2
-  meta: ^1.7.0
+  scrollable_positioned_list: ^0.3.8
+  meta: ^1.9.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints: ^2.0.3
