@@ -317,7 +317,7 @@ class StickyGroupedListViewState<T, E>
 
     int index = currentItem.index ~/ 2;
     if (_topElementIndex != index) {
-      if(_topElementIndex<sortedElements.length) {
+      if (_topElementIndex < sortedElements.length) {
         E curr = widget.groupBy(sortedElements[index]);
         E prev = widget.groupBy(sortedElements[_topElementIndex]);
         if (prev != curr) {
@@ -362,7 +362,7 @@ class StickyGroupedListViewState<T, E>
   }
 
   Widget _showFixedGroupHeader(int index) {
-    if (widget.elements.isNotEmpty && index<sortedElements.length) {
+    if (widget.elements.isNotEmpty && index < sortedElements.length) {
       _groupHeaderKey = GlobalKey();
       return Container(
         key: _groupHeaderKey,
