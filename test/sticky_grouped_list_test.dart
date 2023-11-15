@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:sticky_grouped_list/sticky_grouped_list.dart';
+import 'package:sticky_grouped_list_plus/sticky_grouped_list.dart';
 
 final List _elements = [
   {'name': 'John', 'group': 'Team A'},

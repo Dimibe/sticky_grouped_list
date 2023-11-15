@@ -1,8 +1,12 @@
+## [3.1.1] - 04.09.2023
+
+* Add param `sort`
+
 ## [3.1.0] - 07.07.2022
 
 * Support for jump/scroll to element
-* Fix initialScrollIndex 
-* Expose ItemPositionsListener 
+* Fix initialScrollIndex
+* Expose ItemPositionsListener
 
 ## [3.0.0] - 18.06.2022
 
@@ -24,11 +28,14 @@
 
 ## [1.2.0] - 19.09.2020
 
-* New feature custom sorting. Added two new options `groupComparator` and `itemComparator`which can be used for comparison between two groups and items. If used the functions will be used for sorting the list.
+* New feature custom sorting. Added two new options `groupComparator` and `itemComparator`which can
+  be used for comparison between two groups and items. If used the functions will be used for
+  sorting the list.
 
 ## [1.1.0] - 06.09.2020
 
-* New feature: The background color of the sticky header is now customizable (only if floatingHeaders option is not used).
+* New feature: The background color of the sticky header is now customizable (only if
+  floatingHeaders option is not used).
 
 ## [1.0.0] - 05.09.2020
 
