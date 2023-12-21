@@ -1,6 +1,6 @@
 name: sticky_grouped_list
 description: A ScrollablePositionedList where the list items can be grouped into sections.
-version: 3.1.0
+version: 3.1.1
 homepage: https://begnis.dev
 repository: https://github.com/Dimibe/sticky_grouped_list
 
