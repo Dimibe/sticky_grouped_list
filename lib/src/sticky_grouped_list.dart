@@ -67,6 +67,13 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
   /// Only used if [floatingHeader] is false.
   final Color stickyHeaderBackgroundColor;
 
+  /// Changes in scroll position in pixels, relative to the current scroll position,
+  /// can be made.
+  final ScrollOffsetController? scrollOffsetController;
+
+  /// Changes in scroll position can be monitored with
+  final ScrollOffsetListener? scrollOffsetListener;
+
   /// Controller for jumping or scrolling to an item.
   final GroupedItemScrollController? itemScrollController;
 
@@ -155,6 +162,8 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
     this.scrollDirection = Axis.vertical,
     this.itemScrollController,
     this.itemPositionsListener,
+    this.scrollOffsetController,
+    this.scrollOffsetListener,
     this.physics,
     this.padding,
     this.reverse = false,
@@ -186,6 +195,8 @@ class StickyGroupedListViewState<T, E>
   final StreamController<int> _streamController = StreamController<int>();
   late ItemPositionsListener _listener;
   late GroupedItemScrollController _controller;
+  late ScrollOffsetController _scrollOffsetcontroller;
+  late ScrollOffsetListener _scrollOffsetListener;
   GlobalKey? _groupHeaderKey;
   final GlobalKey _key = GlobalKey();
   int _topElementIndex = 0;
@@ -198,6 +209,10 @@ class StickyGroupedListViewState<T, E>
     super.initState();
     _controller = widget.itemScrollController ?? GroupedItemScrollController();
     _controller._attach(this);
+    _scrollOffsetcontroller =
+        widget.scrollOffsetController ?? ScrollOffsetController();
+    _scrollOffsetListener =
+        widget.scrollOffsetListener ?? ScrollOffsetListener.create();
     _listener = widget.itemPositionsListener ?? ItemPositionsListener.create();
     _listener.itemPositions.addListener(_positionListener);
   }
@@ -241,6 +256,8 @@ class StickyGroupedListViewState<T, E>
           key: widget.key,
           scrollDirection: widget.scrollDirection,
           itemScrollController: _controller,
+          scrollOffsetController: _scrollOffsetcontroller,
+          scrollOffsetListener: _scrollOffsetListener,
           physics: widget.physics,
           itemPositionsListener: _listener,
           initialAlignment: widget.initialAlignment,
