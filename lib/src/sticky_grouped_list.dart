@@ -137,6 +137,9 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
   /// should be placed.
   final double initialAlignment;
 
+  /// Show sticky header
+  final bool showStickyHeader;
+
   /// Creates a [StickyGroupedListView].
   const StickyGroupedListView({
     super.key,
@@ -166,6 +169,7 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
     this.initialAlignment = 0,
     this.initialScrollIndex = 0,
     this.shrinkWrap = false,
+    this.showStickyHeader = true,
   }) : assert(itemBuilder != null || indexedItemBuilder != null);
 
   @override
@@ -362,7 +366,7 @@ class StickyGroupedListViewState<T, E>
   }
 
   Widget _showFixedGroupHeader(int index) {
-    if (widget.elements.isNotEmpty && index < sortedElements.length) {
+    if (widget.elements.isNotEmpty && index < sortedElements.length && showStickyHeader) {
       _groupHeaderKey = GlobalKey();
       return Container(
         key: _groupHeaderKey,
