@@ -137,6 +137,9 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
   /// should be placed.
   final double initialAlignment;
 
+  /// Show sticky header
+  final bool showStickyHeader;
+
   /// Creates a [StickyGroupedListView].
   const StickyGroupedListView({
     super.key,
@@ -166,6 +169,7 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
     this.initialAlignment = 0,
     this.initialScrollIndex = 0,
     this.shrinkWrap = false,
+    this.showStickyHeader = true,
   }) : assert(itemBuilder != null || indexedItemBuilder != null);
 
   @override
@@ -258,11 +262,16 @@ class StickyGroupedListViewState<T, E>
             int actualIndex = index ~/ 2;
 
             if (index == hiddenIndex) {
-              return Opacity(
-                opacity: 0,
-                child:
-                    widget.groupSeparatorBuilder(sortedElements[actualIndex]),
-              );
+              if (widget.showStickyHeader == true) {
+                return Opacity(
+                  opacity: 0,
+                  child:
+                      widget.groupSeparatorBuilder(sortedElements[actualIndex]),
+                );
+              } else {
+                return widget
+                    .groupSeparatorBuilder(sortedElements[actualIndex]);
+              }
             }
 
             if (_isSeparator!(index)) {
@@ -278,11 +287,13 @@ class StickyGroupedListViewState<T, E>
             return _buildItem(context, actualIndex);
           },
         ),
-        StreamBuilder<int>(
-          stream: _streamController.stream,
-          initialData: _topElementIndex,
-          builder: (_, snapshot) => _showFixedGroupHeader(snapshot.data!),
-        )
+        widget.showStickyHeader
+            ? StreamBuilder<int>(
+                stream: _streamController.stream,
+                initialData: _topElementIndex,
+                builder: (_, snapshot) => _showFixedGroupHeader(snapshot.data!),
+              )
+            : SizedBox.shrink(),
       ],
     );
   }
