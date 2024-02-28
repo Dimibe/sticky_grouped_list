@@ -262,11 +262,16 @@ class StickyGroupedListViewState<T, E>
             int actualIndex = index ~/ 2;
 
             if (index == hiddenIndex) {
-              return Opacity(
-                opacity: 0,
-                child:
-                    widget.groupSeparatorBuilder(sortedElements[actualIndex]),
-              );
+              if (widget.showStickyHeader == true) {
+                return Opacity(
+                  opacity: 0,
+                  child:
+                      widget.groupSeparatorBuilder(sortedElements[actualIndex]),
+                );
+              } else {
+                return widget
+                    .groupSeparatorBuilder(sortedElements[actualIndex]);
+              }
             }
 
             if (_isSeparator!(index)) {
@@ -282,11 +287,13 @@ class StickyGroupedListViewState<T, E>
             return _buildItem(context, actualIndex);
           },
         ),
-        StreamBuilder<int>(
-          stream: _streamController.stream,
-          initialData: _topElementIndex,
-          builder: (_, snapshot) => _showFixedGroupHeader(snapshot.data!),
-        )
+        widget.showStickyHeader
+            ? StreamBuilder<int>(
+                stream: _streamController.stream,
+                initialData: _topElementIndex,
+                builder: (_, snapshot) => _showFixedGroupHeader(snapshot.data!),
+              )
+            : SizedBox.shrink(),
       ],
     );
   }
@@ -366,7 +373,7 @@ class StickyGroupedListViewState<T, E>
   }
 
   Widget _showFixedGroupHeader(int index) {
-    if (widget.elements.isNotEmpty && index < sortedElements.length && widget.showStickyHeader) {
+    if (widget.elements.isNotEmpty && index < sortedElements.length) {
       _groupHeaderKey = GlobalKey();
       return Container(
         key: _groupHeaderKey,
