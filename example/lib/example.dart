@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
             element.date.month,
             element.date.day,
           ),
+          showStickyHeader: false,
           groupComparator: (DateTime value1, DateTime value2) =>
               value2.compareTo(value1),
           itemComparator: (Element element1, Element element2) =>
