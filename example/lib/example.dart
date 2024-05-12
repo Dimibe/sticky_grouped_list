@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
         body: StickyGroupedListView<Element, DateTime>(
           elements: _elements,
           order: StickyGroupedListOrder.ASC,
+          sort: true,
           groupBy: (Element element) => DateTime(
             element.date.year,
             element.date.month,
