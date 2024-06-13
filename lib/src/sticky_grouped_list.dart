@@ -278,11 +278,16 @@ class StickyGroupedListViewState<T, E>
             return _buildItem(context, actualIndex);
           },
         ),
-        StreamBuilder<int>(
-          stream: _streamController.stream,
-          initialData: _topElementIndex,
-          builder: (_, snapshot) => _showFixedGroupHeader(snapshot.data!),
-        )
+        Padding(
+          padding: EdgeInsets.only(
+            top: widget.padding?.top ?? 0,
+          ),
+          child: StreamBuilder<int>(
+            stream: _streamController.stream,
+            initialData: _topElementIndex,
+            builder: (_, snapshot) => _showFixedGroupHeader(snapshot.data!),
+          ),
+        ),
       ],
     );
   }
@@ -301,6 +306,7 @@ class StickyGroupedListViewState<T, E>
     _listBox ??= _key.currentContext?.findRenderObject() as RenderBox?;
     double height = _listBox?.size.height ?? 0;
     headerDimension = headerHeight / height;
+    fixedHeaderThreshold = (widget.padding?.top ?? 0) / height;
 
     ItemPosition reducePositions(ItemPosition pos, ItemPosition current) {
       if (widget.reverse) {
@@ -309,11 +315,13 @@ class StickyGroupedListViewState<T, E>
       return current.itemTrailingEdge < pos.itemTrailingEdge ? current : pos;
     }
 
-    ItemPosition currentItem = _listener.itemPositions.value
-        .where((ItemPosition position) =>
-            !_isSeparator!(position.index) &&
-            position.itemTrailingEdge > headerDimension!)
-        .reduce(reducePositions);
+    ItemPosition currentItem =
+        _listener.itemPositions.value.where((ItemPosition position) {
+      itemEdge = widget.reverse
+          ? 1 - position.itemLeadingEdge
+          : position.itemTrailingEdge;
+      return !_isSeparator!(position.index) && itemEdge > fixedHeaderThreshold;
+    }).reduce(reducePositions);
 
     int index = currentItem.index ~/ 2;
     if (_topElementIndex != index) {
