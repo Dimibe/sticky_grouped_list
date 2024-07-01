@@ -17,4 +17,4 @@ export 'src/sticky_grouped_list.dart'
 export 'src/sticky_grouped_list_order.dart' show StickyGroupedListOrder;
 
 export 'package:scrollable_positioned_list/scrollable_positioned_list.dart'
-    show ItemPositionsListener;
+    show ItemPositionsListener, ScrollOffsetListener, ScrollOffsetController;
