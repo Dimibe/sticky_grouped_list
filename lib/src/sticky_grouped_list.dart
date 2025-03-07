@@ -385,7 +385,7 @@ class StickyGroupedListViewState<T, E>
   }
 }
 
-/// Controller to jump or scroll to a particular element the list.
+/// Controller to jump or scroll to a particular element in the list.
 ///
 /// See [ItemScrollController].
 class GroupedItemScrollController extends ItemScrollController {
