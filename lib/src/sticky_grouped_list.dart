@@ -309,24 +309,27 @@ class StickyGroupedListViewState<T, E>
       return current.itemTrailingEdge < pos.itemTrailingEdge ? current : pos;
     }
 
-    ItemPosition currentItem = _listener.itemPositions.value
+    final Iterable<ItemPosition> filteredItems = _listener.itemPositions.value
         .where((ItemPosition position) =>
             !_isSeparator!(position.index) &&
-            position.itemTrailingEdge > headerDimension!)
-        .reduce(reducePositions);
+            position.itemTrailingEdge > headerDimension!);
+    
+    if (filteredItems.isNotEmpty) {
+      final ItemPosition currentItem = filteredItems.reduce(reducePositions);
 
-    int index = currentItem.index ~/ 2;
-    if (_topElementIndex != index) {
-      if (_topElementIndex < sortedElements.length) {
-        E curr = widget.groupBy(sortedElements[index]);
-        E prev = widget.groupBy(sortedElements[_topElementIndex]);
-        if (prev != curr) {
+      final int index = currentItem.index ~/ 2;
+      if (_topElementIndex != index) {
+        if (_topElementIndex < sortedElements.length) {
+          E curr = widget.groupBy(sortedElements[index]);
+          E prev = widget.groupBy(sortedElements[_topElementIndex]);
+          if (prev != curr) {
+            _topElementIndex = index;
+            _streamController.add(_topElementIndex);
+          }
+        } else {
           _topElementIndex = index;
           _streamController.add(_topElementIndex);
         }
-      } else {
-        _topElementIndex = index;
-        _streamController.add(_topElementIndex);
       }
     }
   }
